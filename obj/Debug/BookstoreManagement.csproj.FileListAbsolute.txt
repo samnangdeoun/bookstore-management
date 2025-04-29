@@ -1,0 +1,4 @@
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\obj\Debug\BookstoreManagement.csproj.AssemblyReference.cache
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\obj\Debug\BookstoreManagement.Properties.Resources.resources
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\obj\Debug\BookstoreManagement.csproj.GenerateResource.cache
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\obj\Debug\BookstoreManagement.csproj.CoreCompileInputs.cache
