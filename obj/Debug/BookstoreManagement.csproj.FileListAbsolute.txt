@@ -1,4 +1,12 @@
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\bin\Debug\BookstoreDB.mdf
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\bin\Debug\BookstoreDB_log.ldf
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\bin\Debug\BookstoreManagement.exe.config
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\bin\Debug\BookstoreManagement.exe
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\bin\Debug\BookstoreManagement.pdb
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\obj\Debug\BookstoreManagement.csproj.AssemblyReference.cache
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\obj\Debug\BookstoreManagement.Forms.BookForm.resources
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\obj\Debug\BookstoreManagement.Properties.Resources.resources
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\obj\Debug\BookstoreManagement.csproj.GenerateResource.cache
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\obj\Debug\BookstoreManagement.csproj.CoreCompileInputs.cache
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\obj\Debug\BookstoreManagement.exe
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\BookstoreManagement\obj\Debug\BookstoreManagement.pdb

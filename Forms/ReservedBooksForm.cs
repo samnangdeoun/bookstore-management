@@ -8,11 +8,56 @@ namespace BookstoreManagement.Forms
     {
         private BookstoreDataDataContext db;
 
+        private DataGridView dgvReservedBooks;
+        private Button btnMarkAsCollected, btnCancelReservation;
+
         public ReservedBooksForm()
         {
-            InitializeComponent();
+            this.Text = "Reserved Books";
+            this.Size = new System.Drawing.Size(800, 400);
+            this.StartPosition = FormStartPosition.CenterScreen;
+
             db = new BookstoreDataDataContext();
+            InitializeControls();
             LoadReservedBooks();
+        }
+
+        private void InitializeControls()
+        {
+            int top = 20;
+
+            dgvReservedBooks = new DataGridView
+            {
+                Top = top,
+                Left = 20,
+                Width = 740,
+                Height = 200,
+                ReadOnly = true,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+            };
+            this.Controls.Add(dgvReservedBooks);
+
+            top += 220;
+
+            btnMarkAsCollected = new Button
+            {
+                Text = "Mark as Collected",
+                Top = top,
+                Left = 20,
+                Width = 180
+            };
+            btnMarkAsCollected.Click += btnMarkAsCollected_Click;
+            this.Controls.Add(btnMarkAsCollected);
+
+            btnCancelReservation = new Button
+            {
+                Text = "Cancel Reservation",
+                Top = top,
+                Left = 220,
+                Width = 180
+            };
+            btnCancelReservation.Click += btnCancelReservation_Click;
+            this.Controls.Add(btnCancelReservation);
         }
 
         private void LoadReservedBooks()

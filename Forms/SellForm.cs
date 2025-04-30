@@ -8,11 +8,61 @@ namespace BookstoreManagement.Forms
     {
         private BookstoreDataDataContext db;
 
+        private ComboBox cmbBooks;
+        private NumericUpDown nudQuantity;
+        private Button btnSell;
+
         public SellForm()
         {
-            InitializeComponent();
+            this.Text = "Sell Books";
+            this.Size = new System.Drawing.Size(400, 300);
+            this.StartPosition = FormStartPosition.CenterScreen;
+
             db = new BookstoreDataDataContext();
+            InitializeControls();
             LoadBooks();
+        }
+
+        private void InitializeControls()
+        {
+            int top = 20;
+
+            Label CreateLabel(string text)
+            {
+                return new Label
+                {
+                    Text = text,
+                    Top = top,
+                    Left = 20,
+                    Width = 120
+                };
+            }
+
+            Control AddControl(Control control)
+            {
+                control.Top = top;
+                control.Left = 160;
+                control.Width = 180;
+                this.Controls.Add(control);
+                top += 40;
+                return control;
+            }
+
+            this.Controls.Add(CreateLabel("Select Book:"));
+            cmbBooks = (ComboBox)AddControl(new ComboBox());
+
+            this.Controls.Add(CreateLabel("Quantity:"));
+            nudQuantity = (NumericUpDown)AddControl(new NumericUpDown { Minimum = 1 });
+
+            btnSell = new Button
+            {
+                Text = "Sell",
+                Top = top + 10,
+                Left = 160,
+                Width = 180
+            };
+            btnSell.Click += btnSell_Click;
+            this.Controls.Add(btnSell);
         }
 
         private void LoadBooks()
@@ -39,7 +89,7 @@ namespace BookstoreManagement.Forms
 
             if (book != null && quantity > 0)
             {
-                decimal totalPrice = book.SalePrice * quantity;
+                decimal totalPrice = (decimal)(book.SalePrice * quantity);
                 var sale = new Sale
                 {
                     BookId = bookId,
