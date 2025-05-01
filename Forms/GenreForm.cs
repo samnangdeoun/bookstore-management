@@ -7,7 +7,7 @@ namespace BookstoreManagement
 {
     public partial class GenreForm : Form
     {
-        private BookstoreDataDataContext db;
+        private BookStoreDBDataContext db;
 
         private TextBox txtGenreName;
         private DataGridView dgvGenres;
@@ -19,7 +19,7 @@ namespace BookstoreManagement
             this.Size = new Size(600, 400);
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            db = new BookstoreDataDataContext();
+            db = new BookStoreDBDataContext();
             InitializeControls();
             LoadGenres();
         }

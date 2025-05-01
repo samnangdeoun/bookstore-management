@@ -7,7 +7,7 @@ namespace BookstoreManagement
 {
     public partial class BookListForm : Form
     {
-        private BookstoreDataDataContext db;
+        private BookStoreDBDataContext db;
         private DataGridView dgvBooks;
         private Button btnAdd, btnEdit, btnDelete;
 
@@ -17,7 +17,7 @@ namespace BookstoreManagement
             this.Size = new Size(900, 500);
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            db = new BookstoreDataDataContext();
+            db = new BookStoreDBDataContext();
             InitializeControls();
             LoadBooks();
         }
@@ -55,11 +55,8 @@ namespace BookstoreManagement
             {
                 b.Id,
                 b.Name,
-                Author = b.AuthorFullName,
+                Author = b.AuthorName,
                 Genre = b.Genre.Name,
-                PublishingHouse = b.PublishingHouse,
-                Pages = b.Pages,
-                DatePublished = b.DatePublished,
                 b.SalePrice,
                 IsSequel = (bool)b.IsSequel ? "Yes" : "No"
             }).ToList();

@@ -33,5 +33,16 @@ namespace BookstoreManagement.Properties {
                 return ((string)(this["BookstoreDBConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\Bookstore.mdf" +
+            ";Integrated Security=True")]
+        public string BookstoreConnectionString {
+            get {
+                return ((string)(this["BookstoreConnectionString"]));
+            }
+        }
     }
 }

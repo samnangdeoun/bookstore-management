@@ -6,7 +6,7 @@ namespace BookstoreManagement.Forms
 {
     public partial class ReportsForm : Form
     {
-        private BookstoreDataDataContext db;
+        private BookStoreDBDataContext db;
 
         private DateTimePicker dtpStartDate, dtpEndDate;
         private Button btnGenerateReport;
@@ -18,7 +18,7 @@ namespace BookstoreManagement.Forms
             this.Size = new System.Drawing.Size(800, 400);
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            db = new BookstoreDataDataContext();
+            db = new BookStoreDBDataContext();
             InitializeControls();
         }
 
@@ -82,11 +82,11 @@ namespace BookstoreManagement.Forms
 
             var salesReport = db.Sales
                 .Where(s => s.DateSold >= startDate && s.DateSold <= endDate)
-                .GroupBy(s => new { s.Book.Name, s.Book.AuthorFullName })
+                .GroupBy(s => new { s.Book.Name, s.Book.AuthorName })
                 .Select(g => new
                 {
                     BookName = g.Key.Name,
-                    Author = g.Key.AuthorFullName,
+                    Author = g.Key.AuthorName,
                     TotalSales = g.Sum(s => s.TotalPrice),
                     QuantitySold = g.Count()
                 })

@@ -22,8 +22,8 @@ namespace BookstoreManagement
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="BookstoreDB")]
-	public partial class BookstoreDataDataContext : System.Data.Linq.DataContext
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="BookStore")]
+	public partial class BookStoreDBDataContext : System.Data.Linq.DataContext
 	{
 		
 		private static System.Data.Linq.Mapping.MappingSource mappingSource = new AttributeMappingSource();
@@ -33,6 +33,9 @@ namespace BookstoreManagement
     partial void InsertBook(Book instance);
     partial void UpdateBook(Book instance);
     partial void DeleteBook(Book instance);
+    partial void InsertBookStat(BookStat instance);
+    partial void UpdateBookStat(BookStat instance);
+    partial void DeleteBookStat(BookStat instance);
     partial void InsertDiscount(Discount instance);
     partial void UpdateDiscount(Discount instance);
     partial void DeleteDiscount(Discount instance);
@@ -48,36 +51,33 @@ namespace BookstoreManagement
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
-    partial void InsertBookStat(BookStat instance);
-    partial void UpdateBookStat(BookStat instance);
-    partial void DeleteBookStat(BookStat instance);
     #endregion
 		
-		public BookstoreDataDataContext() : 
-				base(global::BookstoreManagement.Properties.Settings.Default.BookstoreDBConnectionString, mappingSource)
+		public BookStoreDBDataContext() : 
+				base(global::BookstoreManagement.Properties.Settings.Default.BookstoreConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public BookstoreDataDataContext(string connection) : 
+		public BookStoreDBDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public BookstoreDataDataContext(System.Data.IDbConnection connection) : 
+		public BookStoreDBDataContext(System.Data.IDbConnection connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public BookstoreDataDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public BookStoreDBDataContext(string connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
 		}
 		
-		public BookstoreDataDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
+		public BookStoreDBDataContext(System.Data.IDbConnection connection, System.Data.Linq.Mapping.MappingSource mappingSource) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -88,6 +88,14 @@ namespace BookstoreManagement
 			get
 			{
 				return this.GetTable<Book>();
+			}
+		}
+		
+		public System.Data.Linq.Table<BookStat> BookStats
+		{
+			get
+			{
+				return this.GetTable<BookStat>();
 			}
 		}
 		
@@ -130,17 +138,9 @@ namespace BookstoreManagement
 				return this.GetTable<User>();
 			}
 		}
-		
-		public System.Data.Linq.Table<BookStat> BookStats
-		{
-			get
-			{
-				return this.GetTable<BookStat>();
-			}
-		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Books")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Book")]
 	public partial class Book : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -150,13 +150,11 @@ namespace BookstoreManagement
 		
 		private string _Name;
 		
-		private string _AuthorFullName;
-		
-		private string _PublishingHouse;
+		private string _AuthorName;
 		
 		private System.Nullable<int> _Pages;
 		
-		private int _GenreId;
+		private System.Nullable<int> _GenreId;
 		
 		private System.Nullable<System.DateTime> _DatePublished;
 		
@@ -166,11 +164,11 @@ namespace BookstoreManagement
 		
 		private System.Nullable<bool> _IsSequel;
 		
+		private EntitySet<BookStat> _BookStats;
+		
 		private EntitySet<Reservation> _Reservations;
 		
 		private EntitySet<Sale> _Sales;
-		
-		private EntitySet<BookStat> _BookStats;
 		
 		private EntityRef<Genre> _Genre;
 		
@@ -182,13 +180,11 @@ namespace BookstoreManagement
     partial void OnIdChanged();
     partial void OnNameChanging(string value);
     partial void OnNameChanged();
-    partial void OnAuthorFullNameChanging(string value);
-    partial void OnAuthorFullNameChanged();
-    partial void OnPublishingHouseChanging(string value);
-    partial void OnPublishingHouseChanged();
+    partial void OnAuthorNameChanging(string value);
+    partial void OnAuthorNameChanged();
     partial void OnPagesChanging(System.Nullable<int> value);
     partial void OnPagesChanged();
-    partial void OnGenreIdChanging(int value);
+    partial void OnGenreIdChanging(System.Nullable<int> value);
     partial void OnGenreIdChanged();
     partial void OnDatePublishedChanging(System.Nullable<System.DateTime> value);
     partial void OnDatePublishedChanged();
@@ -202,9 +198,9 @@ namespace BookstoreManagement
 		
 		public Book()
 		{
+			this._BookStats = new EntitySet<BookStat>(new Action<BookStat>(this.attach_BookStats), new Action<BookStat>(this.detach_BookStats));
 			this._Reservations = new EntitySet<Reservation>(new Action<Reservation>(this.attach_Reservations), new Action<Reservation>(this.detach_Reservations));
 			this._Sales = new EntitySet<Sale>(new Action<Sale>(this.attach_Sales), new Action<Sale>(this.detach_Sales));
-			this._BookStats = new EntitySet<BookStat>(new Action<BookStat>(this.attach_BookStats), new Action<BookStat>(this.detach_BookStats));
 			this._Genre = default(EntityRef<Genre>);
 			OnCreated();
 		}
@@ -249,42 +245,22 @@ namespace BookstoreManagement
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AuthorFullName", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
-		public string AuthorFullName
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AuthorName", DbType="NVarChar(150)")]
+		public string AuthorName
 		{
 			get
 			{
-				return this._AuthorFullName;
+				return this._AuthorName;
 			}
 			set
 			{
-				if ((this._AuthorFullName != value))
+				if ((this._AuthorName != value))
 				{
-					this.OnAuthorFullNameChanging(value);
+					this.OnAuthorNameChanging(value);
 					this.SendPropertyChanging();
-					this._AuthorFullName = value;
-					this.SendPropertyChanged("AuthorFullName");
-					this.OnAuthorFullNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PublishingHouse", DbType="NVarChar(200)")]
-		public string PublishingHouse
-		{
-			get
-			{
-				return this._PublishingHouse;
-			}
-			set
-			{
-				if ((this._PublishingHouse != value))
-				{
-					this.OnPublishingHouseChanging(value);
-					this.SendPropertyChanging();
-					this._PublishingHouse = value;
-					this.SendPropertyChanged("PublishingHouse");
-					this.OnPublishingHouseChanged();
+					this._AuthorName = value;
+					this.SendPropertyChanged("AuthorName");
+					this.OnAuthorNameChanged();
 				}
 			}
 		}
@@ -309,8 +285,8 @@ namespace BookstoreManagement
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GenreId", DbType="Int NOT NULL")]
-		public int GenreId
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GenreId", DbType="Int")]
+		public System.Nullable<int> GenreId
 		{
 			get
 			{
@@ -333,7 +309,7 @@ namespace BookstoreManagement
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DatePublished", DbType="DateTime")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DatePublished", DbType="Date")]
 		public System.Nullable<System.DateTime> DatePublished
 		{
 			get
@@ -353,7 +329,7 @@ namespace BookstoreManagement
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PrimeCost", DbType="Decimal(18,2)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PrimeCost", DbType="Decimal(10,2)")]
 		public System.Nullable<decimal> PrimeCost
 		{
 			get
@@ -373,7 +349,7 @@ namespace BookstoreManagement
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SalePrice", DbType="Decimal(18,2)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SalePrice", DbType="Decimal(10,2)")]
 		public System.Nullable<decimal> SalePrice
 		{
 			get
@@ -413,6 +389,19 @@ namespace BookstoreManagement
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Book_BookStat", Storage="_BookStats", ThisKey="Id", OtherKey="BookId")]
+		public EntitySet<BookStat> BookStats
+		{
+			get
+			{
+				return this._BookStats;
+			}
+			set
+			{
+				this._BookStats.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Book_Reservation", Storage="_Reservations", ThisKey="Id", OtherKey="BookId")]
 		public EntitySet<Reservation> Reservations
 		{
@@ -436,19 +425,6 @@ namespace BookstoreManagement
 			set
 			{
 				this._Sales.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Book_BookStat", Storage="_BookStats", ThisKey="Id", OtherKey="BookId")]
-		public EntitySet<BookStat> BookStats
-		{
-			get
-			{
-				return this._BookStats;
-			}
-			set
-			{
-				this._BookStats.Assign(value);
 			}
 		}
 		
@@ -479,7 +455,7 @@ namespace BookstoreManagement
 					}
 					else
 					{
-						this._GenreId = default(int);
+						this._GenreId = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("Genre");
 				}
@@ -506,6 +482,18 @@ namespace BookstoreManagement
 			}
 		}
 		
+		private void attach_BookStats(BookStat entity)
+		{
+			this.SendPropertyChanging();
+			entity.Book = this;
+		}
+		
+		private void detach_BookStats(BookStat entity)
+		{
+			this.SendPropertyChanging();
+			entity.Book = null;
+		}
+		
 		private void attach_Reservations(Reservation entity)
 		{
 			this.SendPropertyChanging();
@@ -529,21 +517,184 @@ namespace BookstoreManagement
 			this.SendPropertyChanging();
 			entity.Book = null;
 		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BookStat")]
+	public partial class BookStat : INotifyPropertyChanging, INotifyPropertyChanged
+	{
 		
-		private void attach_BookStats(BookStat entity)
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private int _BookId;
+		
+		private System.Nullable<int> _SoldCount;
+		
+		private System.Nullable<System.DateTime> _LastSoldAt;
+		
+		private EntityRef<Book> _Book;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnBookIdChanging(int value);
+    partial void OnBookIdChanged();
+    partial void OnSoldCountChanging(System.Nullable<int> value);
+    partial void OnSoldCountChanged();
+    partial void OnLastSoldAtChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastSoldAtChanged();
+    #endregion
+		
+		public BookStat()
 		{
-			this.SendPropertyChanging();
-			entity.Book = this;
+			this._Book = default(EntityRef<Book>);
+			OnCreated();
 		}
 		
-		private void detach_BookStats(BookStat entity)
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
 		{
-			this.SendPropertyChanging();
-			entity.Book = null;
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BookId", DbType="Int NOT NULL")]
+		public int BookId
+		{
+			get
+			{
+				return this._BookId;
+			}
+			set
+			{
+				if ((this._BookId != value))
+				{
+					if (this._Book.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBookIdChanging(value);
+					this.SendPropertyChanging();
+					this._BookId = value;
+					this.SendPropertyChanged("BookId");
+					this.OnBookIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SoldCount", DbType="Int")]
+		public System.Nullable<int> SoldCount
+		{
+			get
+			{
+				return this._SoldCount;
+			}
+			set
+			{
+				if ((this._SoldCount != value))
+				{
+					this.OnSoldCountChanging(value);
+					this.SendPropertyChanging();
+					this._SoldCount = value;
+					this.SendPropertyChanged("SoldCount");
+					this.OnSoldCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastSoldAt", DbType="DateTime")]
+		public System.Nullable<System.DateTime> LastSoldAt
+		{
+			get
+			{
+				return this._LastSoldAt;
+			}
+			set
+			{
+				if ((this._LastSoldAt != value))
+				{
+					this.OnLastSoldAtChanging(value);
+					this.SendPropertyChanging();
+					this._LastSoldAt = value;
+					this.SendPropertyChanged("LastSoldAt");
+					this.OnLastSoldAtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Book_BookStat", Storage="_Book", ThisKey="BookId", OtherKey="Id", IsForeignKey=true)]
+		public Book Book
+		{
+			get
+			{
+				return this._Book.Entity;
+			}
+			set
+			{
+				Book previousValue = this._Book.Entity;
+				if (((previousValue != value) 
+							|| (this._Book.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Book.Entity = null;
+						previousValue.BookStats.Remove(this);
+					}
+					this._Book.Entity = value;
+					if ((value != null))
+					{
+						value.BookStats.Add(this);
+						this._BookId = value.Id;
+					}
+					else
+					{
+						this._BookId = default(int);
+					}
+					this.SendPropertyChanged("Book");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Discounts")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Discount")]
 	public partial class Discount : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -553,7 +704,7 @@ namespace BookstoreManagement
 		
 		private int _GenreId;
 		
-		private decimal _Percentage;
+		private System.Nullable<decimal> _Percentage;
 		
 		private System.Nullable<System.DateTime> _StartDate;
 		
@@ -569,7 +720,7 @@ namespace BookstoreManagement
     partial void OnIdChanged();
     partial void OnGenreIdChanging(int value);
     partial void OnGenreIdChanged();
-    partial void OnPercentageChanging(decimal value);
+    partial void OnPercentageChanging(System.Nullable<decimal> value);
     partial void OnPercentageChanged();
     partial void OnStartDateChanging(System.Nullable<System.DateTime> value);
     partial void OnStartDateChanged();
@@ -627,8 +778,8 @@ namespace BookstoreManagement
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Percentage", DbType="Decimal(5,2) NOT NULL")]
-		public decimal Percentage
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Percentage", DbType="Decimal(5,2)")]
+		public System.Nullable<decimal> Percentage
 		{
 			get
 			{
@@ -647,7 +798,7 @@ namespace BookstoreManagement
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartDate", DbType="DateTime")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StartDate", DbType="Date")]
 		public System.Nullable<System.DateTime> StartDate
 		{
 			get
@@ -667,7 +818,7 @@ namespace BookstoreManagement
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndDate", DbType="DateTime")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EndDate", DbType="Date")]
 		public System.Nullable<System.DateTime> EndDate
 		{
 			get
@@ -742,7 +893,7 @@ namespace BookstoreManagement
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Genres")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Genre")]
 	public partial class Genre : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -884,7 +1035,7 @@ namespace BookstoreManagement
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reservations")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Reservation")]
 	public partial class Reservation : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -964,7 +1115,7 @@ namespace BookstoreManagement
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerName", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CustomerName", DbType="NVarChar(150)")]
 		public string CustomerName
 		{
 			get
@@ -1059,7 +1210,7 @@ namespace BookstoreManagement
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Sales")]
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Sale")]
 	public partial class Sale : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -1163,7 +1314,7 @@ namespace BookstoreManagement
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPrice", DbType="Decimal(18,2)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPrice", DbType="Decimal(10,2)")]
 		public System.Nullable<decimal> TotalPrice
 		{
 			get
@@ -1331,7 +1482,7 @@ namespace BookstoreManagement
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PasswordHash", DbType="NVarChar(255) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PasswordHash", DbType="NVarChar(256) NOT NULL", CanBeNull=false)]
 		public string PasswordHash
 		{
 			get
@@ -1367,181 +1518,6 @@ namespace BookstoreManagement
 					this._Role = value;
 					this.SendPropertyChanged("Role");
 					this.OnRoleChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BookStats")]
-	public partial class BookStat : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private int _BookId;
-		
-		private int _SoldCount;
-		
-		private System.Nullable<System.DateTime> _LastSoldAt;
-		
-		private EntityRef<Book> _Book;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnBookIdChanging(int value);
-    partial void OnBookIdChanged();
-    partial void OnSoldCountChanging(int value);
-    partial void OnSoldCountChanged();
-    partial void OnLastSoldAtChanging(System.Nullable<System.DateTime> value);
-    partial void OnLastSoldAtChanged();
-    #endregion
-		
-		public BookStat()
-		{
-			this._Book = default(EntityRef<Book>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BookId", DbType="Int NOT NULL")]
-		public int BookId
-		{
-			get
-			{
-				return this._BookId;
-			}
-			set
-			{
-				if ((this._BookId != value))
-				{
-					if (this._Book.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnBookIdChanging(value);
-					this.SendPropertyChanging();
-					this._BookId = value;
-					this.SendPropertyChanged("BookId");
-					this.OnBookIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SoldCount", DbType="Int NOT NULL")]
-		public int SoldCount
-		{
-			get
-			{
-				return this._SoldCount;
-			}
-			set
-			{
-				if ((this._SoldCount != value))
-				{
-					this.OnSoldCountChanging(value);
-					this.SendPropertyChanging();
-					this._SoldCount = value;
-					this.SendPropertyChanged("SoldCount");
-					this.OnSoldCountChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastSoldAt", DbType="DateTime")]
-		public System.Nullable<System.DateTime> LastSoldAt
-		{
-			get
-			{
-				return this._LastSoldAt;
-			}
-			set
-			{
-				if ((this._LastSoldAt != value))
-				{
-					this.OnLastSoldAtChanging(value);
-					this.SendPropertyChanging();
-					this._LastSoldAt = value;
-					this.SendPropertyChanged("LastSoldAt");
-					this.OnLastSoldAtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Book_BookStat", Storage="_Book", ThisKey="BookId", OtherKey="Id", IsForeignKey=true)]
-		public Book Book
-		{
-			get
-			{
-				return this._Book.Entity;
-			}
-			set
-			{
-				Book previousValue = this._Book.Entity;
-				if (((previousValue != value) 
-							|| (this._Book.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Book.Entity = null;
-						previousValue.BookStats.Remove(this);
-					}
-					this._Book.Entity = value;
-					if ((value != null))
-					{
-						value.BookStats.Add(this);
-						this._BookId = value.Id;
-					}
-					else
-					{
-						this._BookId = default(int);
-					}
-					this.SendPropertyChanged("Book");
 				}
 			}
 		}

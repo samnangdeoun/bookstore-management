@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows.Forms;
 
 namespace BookstoreManagement.Forms
@@ -18,6 +20,15 @@ namespace BookstoreManagement.Forms
             this.StartPosition = FormStartPosition.CenterScreen;
 
             InitializeControls();
+        }
+
+        private static string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return Convert.ToBase64String(hashedBytes);
+            }
         }
 
         private void InitializeControls()
@@ -69,11 +80,13 @@ namespace BookstoreManagement.Forms
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            using (var db = new BookstoreDataDataContext())
+            using (var db = new BookStoreDBDataContext())
             {
+                var hashedPassword = HashPassword(txtPassword.Text);
                 var user = db.Users
-                    .FirstOrDefault(u => u.Username == txtUsername.Text && u.PasswordHash == txtPassword.Text); // NOTE: Ideally hash the password before comparing
+                    .FirstOrDefault(u => u.Username == txtUsername.Text && u.PasswordHash == hashedPassword); // NOTE: Ideally hash the password before comparing
 
+                Console.WriteLine(db + " Username");
                 if (user != null)
                 {
                     new MainForm().Show();

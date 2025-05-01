@@ -2,12 +2,13 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Text.Json;
 
 namespace BookstoreManagement.Forms
 {
     public partial class BookForm : Form
     {
-        private BookstoreDataDataContext db = new BookstoreDataDataContext();
+        private BookStoreDBDataContext db = new BookStoreDBDataContext();
         private Book editingBook = null;
 
         private TextBox txtName, txtAuthor, txtPublisher;
@@ -28,10 +29,10 @@ namespace BookstoreManagement.Forms
 
             if (book != null)
             {
+                MessageBox.Show(book.Name + " Book Name");
                 editingBook = book;
                 txtName.Text = book.Name;
-                txtAuthor.Text = book.AuthorFullName;
-                txtPublisher.Text = book.PublishingHouse;
+                txtAuthor.Text = book.AuthorName;
                 numPages.Value = (decimal)book.Pages;
                 cmbGenre.SelectedValue = book.GenreId;
                 dtpPublishDate.Value = (DateTime)book.DatePublished;
@@ -108,8 +109,7 @@ namespace BookstoreManagement.Forms
             }
 
             editingBook.Name = txtName.Text;
-            editingBook.AuthorFullName = txtAuthor.Text;
-            editingBook.PublishingHouse = txtPublisher.Text;
+            editingBook.AuthorName = txtAuthor.Text;
             editingBook.Pages = (int)numPages.Value;
             editingBook.GenreId = (int)cmbGenre.SelectedValue;
             editingBook.DatePublished = dtpPublishDate.Value;

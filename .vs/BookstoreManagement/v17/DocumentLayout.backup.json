@@ -1,23 +1,29 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\BookstoreManagement\\",
+  "WorkspaceRootPath": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstoremanagement\\data\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\bookstoredb.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:bookstoredb.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\bookstoredb.dbml.layout||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:bookstoredb.dbml.layout||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\data\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:data\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstoremanagement\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\forms\\bookform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:forms\\bookform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\AppData\\Local\\Temp\\2vlmnswq..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\AppData\\Local\\Temp\\2vlmnswq..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\AppData\\Local\\Temp\\2vlmnswq..sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|ResultFrame"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_LocalDB__MSSQLLocalDB/C__VIRTUAL_DRIVED_STUDY_MATERIAL_STEP_SUBJECTS_ADO.NET_RE_EXAM_BOOKSTORE_MANAGEMENT_BOOKSTORE.MDF/True/SqlTable/dbo.Book.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,43 +33,81 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SQLQuery2.sql ",
-              "DocumentMoniker": "C:\\Users\\Admin\\AppData\\Local\\Temp\\2vlmnswq..sql",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\Users\\Admin\\AppData\\Local\\Temp\\2vlmnswq..sql",
-              "ToolTip": "SQLQuery2.sql *",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-04-30T19:11:44.614Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "DatabaseInitializer.cs",
-              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\BookstoreManagement\\Data\\DatabaseInitializer.cs",
-              "RelativeDocumentMoniker": "Data\\DatabaseInitializer.cs",
-              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\BookstoreManagement\\Data\\DatabaseInitializer.cs",
-              "RelativeToolTip": "Data\\DatabaseInitializer.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAowGoAAAAJAAAAAAAAAA==",
+              "Title": "BookStoreDB.designer.cs",
+              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\BookStoreDB.designer.cs",
+              "RelativeDocumentMoniker": "BookStoreDB.designer.cs",
+              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\BookStoreDB.designer.cs",
+              "RelativeToolTip": "BookStoreDB.designer.cs",
+              "ViewState": "AgIAALwBAAAAAAAAAAAmwAQBAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-30T19:07:17.556Z",
+              "WhenOpened": "2025-05-01T09:38:35.072Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\BookstoreManagement\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\BookstoreManagement\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAA0AAAAAAAAAA==",
+              "Title": "BookStoreDB.dbml.layout",
+              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\BookStoreDB.dbml.layout",
+              "RelativeDocumentMoniker": "BookStoreDB.dbml.layout",
+              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\BookStoreDB.dbml.layout",
+              "RelativeToolTip": "BookStoreDB.dbml.layout",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-05-01T09:38:33.329Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "App.config",
+              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\App.config",
+              "RelativeDocumentMoniker": "App.config",
+              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\App.config",
+              "RelativeToolTip": "App.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-05-01T09:38:14.842Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DatabaseInitializer.cs",
+              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Data\\DatabaseInitializer.cs",
+              "RelativeDocumentMoniker": "Data\\DatabaseInitializer.cs",
+              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Data\\DatabaseInitializer.cs",
+              "RelativeToolTip": "Data\\DatabaseInitializer.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAIwBcAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-30T19:07:12.601Z",
+              "WhenOpened": "2025-05-01T09:37:49.216Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "dbo.Book [Data]",
+              "DocumentMoniker": "ViewDataWindow_MSSQL__/_LocalDB__MSSQLLocalDB/C__VIRTUAL_DRIVED_STUDY_MATERIAL_STEP_SUBJECTS_ADO.NET_RE_EXAM_BOOKSTORE_MANAGEMENT_BOOKSTORE.MDF/True/SqlTable/dbo.Book.sql",
+              "ToolTip": "dbo.Book [Data]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-05-01T09:35:30.902Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "BookForm.cs",
+              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\BookForm.cs",
+              "RelativeDocumentMoniker": "Forms\\BookForm.cs",
+              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\BookForm.cs",
+              "RelativeToolTip": "Forms\\BookForm.cs",
+              "ViewState": "AgIAAGIAAAAAAAAAAAAowG0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-01T09:35:07.488Z",
               "EditorCaption": ""
             }
           ]

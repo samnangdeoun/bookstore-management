@@ -6,7 +6,7 @@ namespace BookstoreManagement.Forms
 {
     public partial class ReservedBooksForm : Form
     {
-        private BookstoreDataDataContext db;
+        private BookStoreDBDataContext db;
 
         private DataGridView dgvReservedBooks;
         private Button btnMarkAsCollected, btnCancelReservation;
@@ -17,7 +17,7 @@ namespace BookstoreManagement.Forms
             this.Size = new System.Drawing.Size(800, 400);
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            db = new BookstoreDataDataContext();
+            db = new BookStoreDBDataContext();
             InitializeControls();
             LoadReservedBooks();
         }

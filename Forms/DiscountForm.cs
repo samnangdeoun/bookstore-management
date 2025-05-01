@@ -7,7 +7,7 @@ namespace BookstoreManagement.Forms
 {
     public partial class DiscountForm : Form
     {
-        private BookstoreDataDataContext db;
+        private BookStoreDBDataContext db;
 
         private ComboBox cmbGenres;
         private NumericUpDown nudDiscount;
@@ -20,7 +20,7 @@ namespace BookstoreManagement.Forms
             this.Size = new Size(400, 300);
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            db = new BookstoreDataDataContext();
+            db = new BookStoreDBDataContext();
             InitializeControls();
             LoadGenres();
         }

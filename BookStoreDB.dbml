@@ -1,34 +1,42 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BookstoreDB" Class="BookstoreDataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\BookstoreDB.mdf;Integrated Security=True" SettingsObjectName="BookstoreManagement.Properties.Settings" SettingsPropertyName="BookstoreDBConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Books" Member="Books">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Bookstore" Class="BookStoreDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\Bookstore.mdf;Integrated Security=True" SettingsObjectName="BookstoreManagement.Properties.Settings" SettingsPropertyName="BookstoreConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Book" Member="Books">
     <Type Name="Book">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="AuthorFullName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="PublishingHouse" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="AuthorName" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
       <Column Name="Pages" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="GenreId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="DatePublished" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="PrimeCost" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
-      <Column Name="SalePrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="GenreId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DatePublished" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="PrimeCost" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="SalePrice" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
       <Column Name="IsSequel" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Book_BookStat" Member="BookStats" ThisKey="Id" OtherKey="BookId" Type="BookStat" />
       <Association Name="Book_Reservation" Member="Reservations" ThisKey="Id" OtherKey="BookId" Type="Reservation" />
       <Association Name="Book_Sale" Member="Sales" ThisKey="Id" OtherKey="BookId" Type="Sale" />
-      <Association Name="Book_BookStat" Member="BookStats" ThisKey="Id" OtherKey="BookId" Type="BookStat" />
       <Association Name="Genre_Book" Member="Genre" ThisKey="GenreId" OtherKey="Id" Type="Genre" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Discounts" Member="Discounts">
+  <Table Name="dbo.BookStat" Member="BookStats">
+    <Type Name="BookStat">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SoldCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LastSoldAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Book_BookStat" Member="Book" ThisKey="BookId" OtherKey="Id" Type="Book" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Discount" Member="Discounts">
     <Type Name="Discount">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="GenreId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Percentage" Type="System.Decimal" DbType="Decimal(5,2) NOT NULL" CanBeNull="false" />
-      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Percentage" Type="System.Decimal" DbType="Decimal(5,2)" CanBeNull="true" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
       <Association Name="Genre_Discount" Member="Genre" ThisKey="GenreId" OtherKey="Id" Type="Genre" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Genres" Member="Genres">
+  <Table Name="dbo.Genre" Member="Genres">
     <Type Name="Genre">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
@@ -36,21 +44,21 @@
       <Association Name="Genre_Discount" Member="Discounts" ThisKey="Id" OtherKey="GenreId" Type="Discount" />
     </Type>
   </Table>
-  <Table Name="dbo.Reservations" Member="Reservations">
+  <Table Name="dbo.Reservation" Member="Reservations">
     <Type Name="Reservation">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="CustomerName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerName" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
       <Column Name="ReservedAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Book_Reservation" Member="Book" ThisKey="BookId" OtherKey="Id" Type="Book" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.Sales" Member="Sales">
+  <Table Name="dbo.Sale" Member="Sales">
     <Type Name="Sale">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Quantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="TotalPrice" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="TotalPrice" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
       <Column Name="DateSold" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="Book_Sale" Member="Book" ThisKey="BookId" OtherKey="Id" Type="Book" IsForeignKey="true" />
     </Type>
@@ -59,17 +67,8 @@
     <Type Name="User">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Username" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="PasswordHash" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordHash" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
       <Column Name="Role" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.BookStats" Member="BookStats">
-    <Type Name="BookStat">
-      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="SoldCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="LastSoldAt" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Association Name="Book_BookStat" Member="Book" ThisKey="BookId" OtherKey="Id" Type="Book" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
