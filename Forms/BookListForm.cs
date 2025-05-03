@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookstoreManagement.Data;
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,19 +8,18 @@ namespace BookstoreManagement
 {
     public partial class BookListForm : Form
     {
-        private BookStoreDBDataContext db;
         private DataGridView dgvBooks;
         private Button btnAdd, btnEdit, btnDelete;
 
         public BookListForm()
         {
-            this.Text = "Book List";
-            this.Size = new Size(900, 500);
-            this.StartPosition = FormStartPosition.CenterScreen;
+            
+                this.Text = "Book List";
+                this.Size = new Size(900, 500);
+                this.StartPosition = FormStartPosition.CenterScreen;
 
-            db = new BookStoreDBDataContext();
-            InitializeControls();
-            LoadBooks();
+                InitializeControls();
+                LoadBooks();
         }
 
         private void InitializeControls()
@@ -51,18 +51,28 @@ namespace BookstoreManagement
 
         private void LoadBooks()
         {
-            var books = db.Books.Select(b => new
+            using (BookStoreContext db = new BookStoreContext())
             {
-                b.Id,
-                b.Name,
-                Author = b.AuthorName,
-                Genre = b.Genre.Name,
-                b.SalePrice,
-                IsSequel = (bool)b.IsSequel ? "Yes" : "No"
-            }).ToList();
+                var books = db.Books.Select(b => new
+                {
+                    b.Id,
+                    b.Name,
+                    Author = b.AuthorName,
+                    Genre = b.GenreId,
+                    b.SalePrice,
+                    IsSequel = b.IsSequel ? "Yes" : "No"
+                }).ToList();
 
-            dgvBooks.DataSource = books;
+                dgvBooks.DataSource = books;
+
+                if (dgvBooks.Columns["SalePrice"] != null)
+                {
+                    dgvBooks.Columns["SalePrice"].DefaultCellStyle.Format = "C2";
+                    dgvBooks.Columns["SalePrice"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                }
+            }
         }
+
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
@@ -73,35 +83,41 @@ namespace BookstoreManagement
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            if (dgvBooks.CurrentRow != null)
+            using (BookStoreContext db = new BookStoreContext())
             {
-                int id = (int)dgvBooks.CurrentRow.Cells["Id"].Value;
-                var book = db.Books.FirstOrDefault(b => b.Id == id);
-
-                if (book != null)
+                if (dgvBooks.CurrentRow != null)
                 {
-                    var form = new Forms.BookForm(book);
-                    form.ShowDialog();
-                    LoadBooks();
+                    int id = (int)dgvBooks.CurrentRow.Cells["Id"].Value;
+                    var book = db.Books.FirstOrDefault(b => b.Id == id);
+
+                    if (book != null)
+                    {
+                        var form = new Forms.BookForm(book);
+                        form.ShowDialog();
+                        LoadBooks();
+                    }
                 }
             }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dgvBooks.CurrentRow != null)
+            using (BookStoreContext db = new BookStoreContext())
             {
-                int id = (int)dgvBooks.CurrentRow.Cells["Id"].Value;
-                var book = db.Books.FirstOrDefault(b => b.Id == id);
-
-                if (book != null)
+                if (dgvBooks.CurrentRow != null)
                 {
-                    var result = MessageBox.Show($"Are you sure you want to delete \"{book.Name}\"?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (result == DialogResult.Yes)
+                    int id = (int)dgvBooks.CurrentRow.Cells["Id"].Value;
+                    var book = db.Books.FirstOrDefault(b => b.Id == id);
+
+                    if (book != null)
                     {
-                        db.Books.DeleteOnSubmit(book);
-                        db.SubmitChanges();
-                        LoadBooks();
+                        var result = MessageBox.Show($"Are you sure you want to delete \"{book.Name}\"?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (result == DialogResult.Yes)
+                        {
+                            db.Books.Remove(book);
+                            db.SaveChanges();
+                            LoadBooks();
+                        }
                     }
                 }
             }

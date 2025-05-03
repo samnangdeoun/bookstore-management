@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookstoreManagement.Data;
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
@@ -69,6 +70,7 @@ namespace BookstoreManagement.Forms
                 Left = 110,
                 Width = 100
             };
+            this.AcceptButton = btnLogin;
             btnLogin.Click += btnLogin_Click;
 
             this.Controls.Add(lblUsername);
@@ -80,22 +82,28 @@ namespace BookstoreManagement.Forms
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            using (var db = new BookStoreDBDataContext())
+            try
             {
-                var hashedPassword = HashPassword(txtPassword.Text);
-                var user = db.Users
-                    .FirstOrDefault(u => u.Username == txtUsername.Text && u.PasswordHash == hashedPassword); // NOTE: Ideally hash the password before comparing
+                using (BookStoreContext db = new BookStoreContext())
+                {
+                    var hashedPassword = HashPassword(txtPassword.Text);
+                    var user = db.Users
+                        .FirstOrDefault(u => u.Username == txtUsername.Text && u.PasswordHash == hashedPassword); // NOTE: Ideally hash the password before comparing
 
-                Console.WriteLine(db + " Username");
-                if (user != null)
-                {
-                    new MainForm().Show();
-                    this.Hide();
+                    Console.WriteLine(db + " Username");
+                    if (user != null)
+                    {
+                        new MainForm().Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid login!", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("Invalid login!", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            }catch(Exception err)
+            {
+                Console.WriteLine("Error: " + err.Message);
             }
         }
     }

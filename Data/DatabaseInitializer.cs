@@ -1,121 +1,176 @@
-﻿using System;
-using System.Data.SqlClient;
-using System.IO;
+﻿using BookstoreManagement.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Windows.Forms;
 
 namespace BookstoreManagement.Data
 {
     public static class DatabaseInitializer
     {
+        private static bool IsDatabaseEmpty(BookStoreContext db)
+        {
+            return !db.Users.Any() && !db.Genres.Any() && !db.Books.Any();
+        }
+
+        private static void clearDatabaseInformation()
+        {
+            using(BookStoreContext db = new BookStoreContext())
+            {
+                if (db.Database.Exists())
+                {
+                    // Clear tables in order to respect foreign key constraints
+                    db.Sales.RemoveRange(db.Sales);
+                    db.Discounts.RemoveRange(db.Discounts);
+                    db.Reservations.RemoveRange(db.Reservations);
+                    db.BookStats.RemoveRange(db.BookStats);
+                    db.Books.RemoveRange(db.Books);
+                    db.Genres.RemoveRange(db.Genres);
+                    db.Users.RemoveRange(db.Users);
+                    
+                    // Save all changes
+                    db.SaveChanges();
+                }
+            }
+        }
+
         public static void EnsureDatabaseExists()
         {
             try
             {
-                string dbFile = Path.Combine(Application.StartupPath, "Bookstore.mdf");
-                Console.WriteLine($"Database file path: {dbFile}");
-                if (!File.Exists(dbFile))
+                using (BookStoreContext db = new BookStoreContext())
                 {
-                    Console.WriteLine("Database file not found. Creating a new database.");
-                    CreateDatabase(dbFile);
-                    CreateTables();
-                    SeedData();
+                    if (!db.Database.Exists())
+                    {
+                        db.Database.CreateIfNotExists();
+                    }
+
+                    db.Database.Initialize(force: false);
+                    if (db.Database.Exists() && IsDatabaseEmpty(db))
+                    {
+                        // Add users one by one
+                        var admin = new Users
+                        {
+                            Username = "admin",
+                            PasswordHash = HashPassword("admin123"),
+                            Role = "Admin"
+                        };
+                        db.Users.Add(admin);
+
+                        var manager = new Users
+                        {
+                            Username = "manager",
+                            PasswordHash = HashPassword("manager123"),
+                            Role = "Manager"
+                        };
+                        db.Users.Add(manager);
+
+                        db.SaveChanges();
+
+                        // Add genres one by one
+                        var genreNames = new[]
+                        {
+                        "Fiction", "Non-Fiction", "Science Fiction", "Mystery", "Romance",
+                        "Fantasy", "Biography", "History", "Children's", "Young Adult"
+                    };
+
+                        foreach (var name in genreNames)
+                        {
+                            db.Genres.Add(new Genre { Name = name });
+                        }
+
+                        db.SaveChanges();
+
+                        // Retrieve genre objects
+                        var fiction = db.Genres.FirstOrDefault(g => g.Name == "Fiction");
+                        var sciFi = db.Genres.FirstOrDefault(g => g.Name == "Science Fiction");
+
+                        // Add books one by one
+                        var book1 = new Book
+                        {
+                            Name = "The Great Novel",
+                            AuthorName = "John Smith",
+                            Pages = 320,
+                            GenreId = fiction.Id,
+                            PublisherName = "Fiction House",
+                            DatePublished = DateTime.Parse("2023-01-15"),
+                            PrimeCost = 15.99M,
+                            SalePrice = 29.99M,
+                            IsSequel = false
+                        };
+                        db.Books.Add(book1);
+
+                        var book2 = new Book
+                        {
+                            Name = "Space Adventures",
+                            AuthorName = "Sarah Johnson",
+                            Pages = 450,
+                            GenreId = sciFi.Id,
+                            PublisherName = "Galactic Press",
+                            DatePublished = DateTime.Parse("2023-03-20"),
+                            PrimeCost = 18.99M,
+                            SalePrice = 34.99M,
+                            IsSequel = false
+                        };
+                        db.Books.Add(book2);
+
+                        var book3 = new Book
+                        {
+                            Name = "Mystery of the Lost Treasure",
+                            AuthorName = "Emily Davis",
+                            Pages = 280,
+                            GenreId = db.Genres.FirstOrDefault(g => g.Name == "Mystery").Id,
+                            PublisherName = "Mystery Press",
+                            DatePublished = DateTime.Parse("2023-05-10"),
+                            PrimeCost = 12.99M,
+                            SalePrice = 24.99M,
+                            IsSequel = false
+                        };
+                        db.Books.Add(book3);
+
+                        var book4 = new Book
+                        {
+                            Name = "Romantic Journey",
+                            AuthorName = "Michael Brown",
+                            Pages = 350,
+                            GenreId = db.Genres.FirstOrDefault(g => g.Name == "Romance").Id,
+                            PublisherName = "Love Stories Publishing",
+                            DatePublished = DateTime.Parse("2023-07-25"),
+                            PrimeCost = 14.99M,
+                            SalePrice = 27.99M,
+                            IsSequel = false
+                        };
+                        db.Books.Add(book4);
+
+                        var book5 = new Book
+                        {
+                            Name = "Fantasy World",
+                            AuthorName = "Jessica Wilson",
+                            Pages = 400,
+                            GenreId = db.Genres.FirstOrDefault(g => g.Name == "Fantasy").Id,
+                            PublisherName = "Fantasy Press",
+                            DatePublished = DateTime.Parse("2023-09-30"),
+                            PrimeCost = 16.99M,
+                            SalePrice = 31.99M,
+                            IsSequel = false
+                        };
+                        db.Books.Add(book5);
+
+                        db.SaveChanges();
+                    }
+                    //else
+                    //{
+                    //    clearDatabaseInformation();
+                    //}
                 }
-                else
-                {
-                    SeedData();
-                }
             }
-            catch (Exception ex)
+            catch (Exception err)
             {
-                MessageBox.Show($"Error initializing database: {ex.Message}", "Database Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private static void CreateDatabase(string dbFile)
-        {
-            string connectionString = "Data Source=(LocalDB)\\MSSQLLocalDB;Integrated Security=True";
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                var cmd = connection.CreateCommand();
-                cmd.CommandText = $"CREATE DATABASE [BookstoreDB] ON (NAME = N'BookstoreDB', FILENAME = '{dbFile}')";
-                cmd.ExecuteNonQuery();
-            }
-            SqlConnection.ClearAllPools();
-        }
-
-        private static void CreateTables()
-        {
-            string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\BookStore.mdf;Integrated Security=True";
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                var cmd = connection.CreateCommand();
-                cmd.CommandText = @"
-                    CREATE TABLE Genre (
-                        Id INT IDENTITY(1,1) PRIMARY KEY,
-                        Name NVARCHAR(100) NOT NULL
-                    );
-
-                    CREATE TABLE Book (
-                        Id INT IDENTITY(1,1) PRIMARY KEY,
-                        Name NVARCHAR(200) NOT NULL,
-                        AuthorName NVARCHAR(150),
-                        Pages INT,
-                        GenreId INT,
-                        DatePublished DATE,
-                        PrimeCost DECIMAL(10,2),
-                        SalePrice DECIMAL(10,2),
-                        IsSequel BIT,
-                        FOREIGN KEY (GenreId) REFERENCES Genre(Id)
-                    );
-
-                    CREATE TABLE Sale (
-                        Id INT IDENTITY(1,1) PRIMARY KEY,
-                        BookId INT NOT NULL,
-                        Quantity INT NOT NULL,
-                        TotalPrice DECIMAL(10,2),
-                        DateSold DATETIME,
-                        FOREIGN KEY (BookId) REFERENCES Book(Id)
-                    );
-
-                    CREATE TABLE Reservation (
-                        Id INT IDENTITY(1,1) PRIMARY KEY,
-                        BookId INT NOT NULL,
-                        CustomerName NVARCHAR(150),
-                        ReservedAt DATETIME,
-                        FOREIGN KEY (BookId) REFERENCES Book(Id)
-                    );
-
-                    CREATE TABLE Discount (
-                        Id INT IDENTITY(1,1) PRIMARY KEY,
-                        GenreId INT NOT NULL,
-                        Percentage DECIMAL(5,2),
-                        StartDate DATE,
-                        EndDate DATE,
-                        FOREIGN KEY (GenreId) REFERENCES Genre(Id)
-                    );
-
-                    CREATE TABLE Users (
-                        Id INT IDENTITY(1,1) PRIMARY KEY,
-                        Username NVARCHAR(100) NOT NULL,
-                        PasswordHash NVARCHAR(256) NOT NULL,
-                        Role NVARCHAR(50) NOT NULL
-                    );
-
-                    CREATE TABLE BookStat (
-                        Id INT IDENTITY(1,1) PRIMARY KEY,
-                        BookId INT NOT NULL,
-                        SoldCount INT,
-                        LastSoldAt DATETIME,
-                        FOREIGN KEY (BookId) REFERENCES Book(Id)
-                    );
-                ";
-                cmd.ExecuteNonQuery();
+                Console.WriteLine($"Error initializing database: {err.Message}");
+                Console.WriteLine("An error occurred: " + err.Message);
+                Console.WriteLine("Inner Exception: " + err.InnerException?.Message);
+                Console.WriteLine(err.StackTrace);
             }
         }
 
@@ -125,97 +180,6 @@ namespace BookstoreManagement.Data
             {
                 var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return Convert.ToBase64String(hashedBytes);
-            }
-        }
-
-        private static void SeedData()
-        {
-            using (var db = new BookStoreDBDataContext())
-            {
-                // ✅ Ensure connection is open before using transaction
-                if (db.Connection.State != System.Data.ConnectionState.Open)
-                {
-                    db.Connection.Open();
-                }
-
-                using (var transaction = db.Connection.BeginTransaction())
-                {
-                    db.Transaction = transaction;
-
-                    try
-                    {
-                        if (!db.Users.Any())
-                        {
-                            db.Users.InsertOnSubmit(new User
-                            {
-                                Id = 1,
-                                Username = "admin",
-                                PasswordHash = HashPassword("admin123"),
-                                Role = "Administrator"
-                            });
-                        }
-
-                        if (!db.Genres.Any())
-                        {
-                            var genres = new[]
-                            {
-                                new Genre { Name = "Fiction" },
-                                new Genre { Name = "Non-Fiction" },
-                                new Genre { Name = "Science Fiction" },
-                                new Genre { Name = "Mystery" },
-                                new Genre { Name = "Romance" },
-                                new Genre { Name = "Fantasy" },
-                                new Genre { Name = "Biography" },
-                                new Genre { Name = "History" },
-                                new Genre { Name = "Children's" },
-                                new Genre { Name = "Young Adult" }
-                            };
-                            db.Genres.InsertAllOnSubmit(genres);
-                            db.SubmitChanges();
-
-                            var fiction = db.Genres.First(g => g.Name == "Fiction");
-                            var sciFi = db.Genres.First(g => g.Name == "Science Fiction");
-
-                            var books = new[]
-                            {
-                                new Book
-                                {
-                                    Name = "The Great Novel",
-                                    AuthorName = "John Smith",
-                                    Pages = 320,
-                                    GenreId = fiction.Id,
-                                    DatePublished = DateTime.Parse("2023-01-15"),
-                                    PrimeCost = 15.99M,
-                                    SalePrice = 29.99M,
-                                    IsSequel = false,
-                                },
-                                new Book
-                                {
-                                    Name = "Space Adventures",
-                                    AuthorName = "Sarah Johnson",
-                                    Pages= 450,
-                                    GenreId = sciFi.Id,
-                                    DatePublished = DateTime.Parse("2023-03-20"),
-                                    PrimeCost = 18.99M,
-                                    SalePrice = 34.99M,
-                                    IsSequel = false,
-                                }
-                            };
-
-                            db.Books.InsertAllOnSubmit(books);
-                        }
-
-                        db.SubmitChanges();
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        MessageBox.Show($"Error seeding database: {ex.Message}", "Seed Error",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        throw;
-                    }
-                }
             }
         }
     }

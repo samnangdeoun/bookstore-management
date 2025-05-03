@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BookstoreManagement.Data;
+using BookstoreManagement.Models;
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,8 +9,6 @@ namespace BookstoreManagement
 {
     public partial class GenreForm : Form
     {
-        private BookStoreDBDataContext db;
-
         private TextBox txtGenreName;
         private DataGridView dgvGenres;
         private Button btnAdd, btnDelete;
@@ -18,8 +18,6 @@ namespace BookstoreManagement
             this.Text = "Manage Genres";
             this.Size = new Size(600, 400);
             this.StartPosition = FormStartPosition.CenterScreen;
-
-            db = new BookStoreDBDataContext();
             InitializeControls();
             LoadGenres();
         }
@@ -74,42 +72,51 @@ namespace BookstoreManagement
 
         private void LoadGenres()
         {
-            dgvGenres.DataSource = db.Genres.Select(g => new { g.Id, g.Name }).ToList();
-        }
+            using (BookStoreContext db = new BookStoreContext())
+            {
+                dgvGenres.DataSource = db.Genres.Select(g => new { g.Id, g.Name }).ToList();
+            }
+         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(txtGenreName.Text))
+            using (BookStoreContext db = new BookStoreContext())
             {
-                db.Genres.InsertOnSubmit(new Genre { Name = txtGenreName.Text });
-                db.SubmitChanges();
-                LoadGenres();
-                txtGenreName.Clear();
-            }
-            else
-            {
-                MessageBox.Show("Genre name cannot be empty.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                if (!string.IsNullOrWhiteSpace(txtGenreName.Text))
+                {
+                    db.Genres.Add(new Genre { Name = txtGenreName.Text });
+                    db.SaveChanges();
+                    LoadGenres();
+                    txtGenreName.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("Genre name cannot be empty.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dgvGenres.CurrentRow != null)
+            using (BookStoreContext db = new BookStoreContext())
             {
-                int id = (int)dgvGenres.CurrentRow.Cells["Id"].Value;
-                var genre = db.Genres.FirstOrDefault(g => g.Id == id);
-
-                if (genre != null)
+                if (dgvGenres.CurrentRow != null)
                 {
-                    var result = MessageBox.Show($"Are you sure you want to delete \"{genre.Name}\"?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (result == DialogResult.Yes)
+                    int id = (int)dgvGenres.CurrentRow.Cells["Id"].Value;
+                    var genre = db.Genres.FirstOrDefault(g => g.Id == id);
+
+                    if (genre != null)
                     {
-                        db.Genres.DeleteOnSubmit(genre);
-                        db.SubmitChanges();
-                        LoadGenres();
+                        var result = MessageBox.Show($"Are you sure you want to delete \"{genre.Name}\"?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (result == DialogResult.Yes)
+                        {
+                            db.Genres.Remove(genre);
+                            db.SaveChanges();
+                            LoadGenres();
+                        }
                     }
                 }
             }
+            }
         }
-    }
 }

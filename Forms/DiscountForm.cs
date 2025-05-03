@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BookstoreManagement.Data;
+using BookstoreManagement.Models;
+using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -7,8 +9,6 @@ namespace BookstoreManagement.Forms
 {
     public partial class DiscountForm : Form
     {
-        private BookStoreDBDataContext db;
-
         private ComboBox cmbGenres;
         private NumericUpDown nudDiscount;
         private DateTimePicker dtpStartDate, dtpEndDate;
@@ -19,8 +19,6 @@ namespace BookstoreManagement.Forms
             this.Text = "Apply Discount";
             this.Size = new Size(400, 300);
             this.StartPosition = FormStartPosition.CenterScreen;
-
-            db = new BookStoreDBDataContext();
             InitializeControls();
             LoadGenres();
         }
@@ -80,37 +78,43 @@ namespace BookstoreManagement.Forms
 
         private void LoadGenres()
         {
-            var genres = db.Genres.Select(g => new { g.Id, g.Name }).ToList();
-            cmbGenres.DataSource = genres;
-            cmbGenres.DisplayMember = "Name";
-            cmbGenres.ValueMember = "Id";
+            using (BookStoreContext db = new BookStoreContext())
+            {
+                var genres = db.Genres.Select(g => new { g.Id, g.Name }).ToList();
+                cmbGenres.DataSource = genres;
+                cmbGenres.DisplayMember = "Name";
+                cmbGenres.ValueMember = "Id";
+            }
         }
 
         private void btnApplyDiscount_Click(object sender, EventArgs e)
         {
-            int genreId = (int)cmbGenres.SelectedValue;
-            decimal discount = nudDiscount.Value;
-            DateTime startDate = dtpStartDate.Value;
-            DateTime endDate = dtpEndDate.Value;
-
-            if (startDate > endDate)
+            using (BookStoreContext db = new BookStoreContext())
             {
-                MessageBox.Show("Start date must be before end date.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                int genreId = (int)cmbGenres.SelectedValue;
+                decimal discount = nudDiscount.Value;
+                DateTime startDate = dtpStartDate.Value;
+                DateTime endDate = dtpEndDate.Value;
+
+                if (startDate > endDate)
+                {
+                    MessageBox.Show("Start date must be before end date.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var discountEntry = new Discount
+                {
+                    GenreId = genreId,
+                    Percentage = discount,
+                    StartDate = startDate,
+                    EndDate = endDate
+                };
+
+                db.Discounts.Add(discountEntry);
+                db.SaveChanges();
+
+                MessageBox.Show("Discount applied successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            var discountEntry = new Discount
-            {
-                GenreId = genreId,
-                Percentage = discount,
-                StartDate = startDate,
-                EndDate = endDate
-            };
-
-            db.Discounts.InsertOnSubmit(discountEntry);
-            db.SubmitChanges();
-
-            MessageBox.Show("Discount applied successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

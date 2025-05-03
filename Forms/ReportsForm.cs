@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookstoreManagement.Data;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -6,19 +7,15 @@ namespace BookstoreManagement.Forms
 {
     public partial class ReportsForm : Form
     {
-        private BookStoreDBDataContext db;
-
         private DateTimePicker dtpStartDate, dtpEndDate;
-        private Button btnGenerateReport;
+        private Button btnGenerateReport, btnExportExcel;
         private DataGridView dgvSalesReport;
 
         public ReportsForm()
         {
             this.Text = "Sales Report";
-            this.Size = new System.Drawing.Size(800, 400);
+            this.Size = new System.Drawing.Size(800, 450);
             this.StartPosition = FormStartPosition.CenterScreen;
-
-            db = new BookStoreDBDataContext();
             InitializeControls();
         }
 
@@ -57,7 +54,7 @@ namespace BookstoreManagement.Forms
             {
                 Text = "Generate Report",
                 Top = top + 10,
-                Left = 160,
+                Left = 20,
                 Width = 180
             };
             btnGenerateReport.Click += btnGenerateReport_Click;
@@ -73,26 +70,98 @@ namespace BookstoreManagement.Forms
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
             };
             this.Controls.Add(dgvSalesReport);
+
+            btnExportExcel= new Button
+            {
+                Text = "Export Report",
+                Top = top + 10,
+                Left = 220,
+                Width = 180
+
+            };
+            btnExportExcel.Click += btnExport_Click;
+            this.Controls.Add(btnExportExcel);
         }
 
         private void btnGenerateReport_Click(object sender, EventArgs e)
         {
-            DateTime startDate = dtpStartDate.Value;
-            DateTime endDate = dtpEndDate.Value;
+            using (BookStoreContext db = new BookStoreContext())
+            {
+                DateTime startDate = dtpStartDate.Value.Date;
+                DateTime endDate = dtpEndDate.Value.Date.AddDays(1).AddTicks(-1); // include full day
 
-            var salesReport = db.Sales
-                .Where(s => s.DateSold >= startDate && s.DateSold <= endDate)
-                .GroupBy(s => new { s.Book.Name, s.Book.AuthorName })
-                .Select(g => new
+                if (endDate < startDate)
                 {
-                    BookName = g.Key.Name,
-                    Author = g.Key.AuthorName,
-                    TotalSales = g.Sum(s => s.TotalPrice),
-                    QuantitySold = g.Count()
-                })
-                .ToList();
+                    MessageBox.Show("End Date must be after Start Date.", "Invalid Date Range", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-            dgvSalesReport.DataSource = salesReport;
+                var salesReport = db.Sales
+                    .Where(s => s.DateSold >= startDate && s.DateSold <= endDate)
+                    .GroupBy(s => new { s.Book.Name, s.Book.AuthorName })
+                    .Select(g => new
+                    {
+                        BookName = g.Key.Name,
+                        Author = g.Key.AuthorName,
+                        DiscountAmount = g.Sum(s => s.DiscountAmount),
+                        QuantitySold = g.Sum(s => s.Quantity),
+                        TotalSales = g.Sum(s => s.TotalPrice)
+                    })
+                    .ToList();
+
+                dgvSalesReport.DataSource = salesReport;
+
+                if (dgvSalesReport.Columns["TotalSales"] != null)
+                {
+                    dgvSalesReport.Columns["TotalSales"].DefaultCellStyle.Format = "C2"; // currency format
+                }
+            }
         }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            if (dgvSalesReport.DataSource == null)
+            {
+                MessageBox.Show("Please generate a report first.");
+                return;
+            }
+
+            using (SaveFileDialog sfd = new SaveFileDialog()
+            {
+                Filter = "Excel Workbook|*.xlsx",
+                Title = "Save Sales Report"
+            })
+            {
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    var dt = new System.Data.DataTable();
+
+                    // Add columns
+                    foreach (DataGridViewColumn column in dgvSalesReport.Columns)
+                    {
+                        dt.Columns.Add(column.HeaderText);
+                    }
+
+                    // Add rows
+                    foreach (DataGridViewRow row in dgvSalesReport.Rows)
+                    {
+                        if (!row.IsNewRow)
+                        {
+                            var data = row.Cells.Cast<DataGridViewCell>().Select(c => c.Value?.ToString()).ToArray();
+                            dt.Rows.Add(data);
+                        }
+                    }
+
+                    using (var workbook = new ClosedXML.Excel.XLWorkbook())
+                    {
+                        workbook.Worksheets.Add(dt, "SalesReport");
+                        workbook.SaveAs(sfd.FileName);
+                    }
+
+                    MessageBox.Show("Report exported successfully!", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookstoreManagement.Data;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -6,8 +7,6 @@ namespace BookstoreManagement.Forms
 {
     public partial class ReservedBooksForm : Form
     {
-        private BookStoreDBDataContext db;
-
         private DataGridView dgvReservedBooks;
         private Button btnMarkAsCollected, btnCancelReservation;
 
@@ -16,8 +15,6 @@ namespace BookstoreManagement.Forms
             this.Text = "Reserved Books";
             this.Size = new System.Drawing.Size(800, 400);
             this.StartPosition = FormStartPosition.CenterScreen;
-
-            db = new BookStoreDBDataContext();
             InitializeControls();
             LoadReservedBooks();
         }
@@ -62,47 +59,56 @@ namespace BookstoreManagement.Forms
 
         private void LoadReservedBooks()
         {
-            var reservedBooks = db.Reservations.Select(r => new
+            using (BookStoreContext db = new BookStoreContext())
             {
-                r.Id,
-                Book = r.Book.Name,
-                CustomerName = r.CustomerName,
-                r.ReservedAt
-            }).ToList();
+                var reservedBooks = db.Reservations.Select(r => new
+                {
+                    r.Id,
+                    Book = r.Book.Name,
+                    CustomerName = r.CustomerName,
+                    r.ReservedAt
+                }).ToList();
 
-            dgvReservedBooks.DataSource = reservedBooks;
+                dgvReservedBooks.DataSource = reservedBooks;
+            }
         }
 
         private void btnMarkAsCollected_Click(object sender, EventArgs e)
         {
-            if (dgvReservedBooks.CurrentRow != null)
+            using (BookStoreContext db = new BookStoreContext())
             {
-                int id = (int)dgvReservedBooks.CurrentRow.Cells["Id"].Value;
-                var reservation = db.Reservations.FirstOrDefault(r => r.Id == id);
-
-                if (reservation != null)
+                if (dgvReservedBooks.CurrentRow != null)
                 {
-                    db.Reservations.DeleteOnSubmit(reservation);
-                    db.SubmitChanges();
-                    LoadReservedBooks();
-                    MessageBox.Show("Reservation marked as collected.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    int id = (int)dgvReservedBooks.CurrentRow.Cells["Id"].Value;
+                    var reservation = db.Reservations.FirstOrDefault(r => r.Id == id);
+
+                    if (reservation != null)
+                    {
+                        db.Reservations.Remove(reservation);
+                        db.SaveChanges();
+                        LoadReservedBooks();
+                        MessageBox.Show("Reservation marked as collected.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
                 }
             }
-        }
 
         private void btnCancelReservation_Click(object sender, EventArgs e)
         {
-            if (dgvReservedBooks.CurrentRow != null)
+            using (BookStoreContext db = new BookStoreContext())
             {
-                int id = (int)dgvReservedBooks.CurrentRow.Cells["Id"].Value;
-                var reservation = db.Reservations.FirstOrDefault(r => r.Id == id);
-
-                if (reservation != null)
+                if (dgvReservedBooks.CurrentRow != null)
                 {
-                    db.Reservations.DeleteOnSubmit(reservation);
-                    db.SubmitChanges();
-                    LoadReservedBooks();
-                    MessageBox.Show("Reservation canceled.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    int id = (int)dgvReservedBooks.CurrentRow.Cells["Id"].Value;
+                    var reservation = db.Reservations.FirstOrDefault(r => r.Id == id);
+
+                    if (reservation != null)
+                    {
+                        db.Reservations.Remove(reservation);
+                        db.SaveChanges();
+                        LoadReservedBooks();
+                        MessageBox.Show("Reservation canceled.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
             }
         }

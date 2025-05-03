@@ -9,6 +9,7 @@ CREATE TABLE Book (
     AuthorName NVARCHAR(150),
     Pages INT,
     GenreId INT,
+    PublisherName NVARCHAR(200),
     DatePublished DATE,
     PrimeCost DECIMAL(10,2),
     SalePrice DECIMAL(10,2),

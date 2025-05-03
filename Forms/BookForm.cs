@@ -2,15 +2,14 @@
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Text.Json;
+using BookstoreManagement.Data;
+using BookstoreManagement.Models;
 
 namespace BookstoreManagement.Forms
 {
     public partial class BookForm : Form
     {
-        private BookStoreDBDataContext db = new BookStoreDBDataContext();
         private Book editingBook = null;
-
         private TextBox txtName, txtAuthor, txtPublisher;
         private NumericUpDown numPages, numPrime, numSale;
         private ComboBox cmbGenre;
@@ -29,16 +28,16 @@ namespace BookstoreManagement.Forms
 
             if (book != null)
             {
-                MessageBox.Show(book.Name + " Book Name");
                 editingBook = book;
                 txtName.Text = book.Name;
                 txtAuthor.Text = book.AuthorName;
+                txtPublisher.Text = book.PublisherName;
                 numPages.Value = (decimal)book.Pages;
                 cmbGenre.SelectedValue = book.GenreId;
-                dtpPublishDate.Value = (DateTime)book.DatePublished;
-                numPrime.Value = (decimal)book.PrimeCost;
-                numSale.Value = (decimal)book.SalePrice;
-                chkSequel.Checked = (bool)book.IsSequel;
+                dtpPublishDate.Value = book.DatePublished != default ? book.DatePublished : DateTime.Now;
+                numPrime.Value = book.PrimeCost != default ? book.PrimeCost : 0m;
+                numSale.Value = book.SalePrice != default ? book.SalePrice : 0m;
+                chkSequel.Checked = book.IsSequel;
             }
         }
 
@@ -95,30 +94,71 @@ namespace BookstoreManagement.Forms
 
         private void LoadGenres()
         {
-            cmbGenre.DataSource = db.Genres.ToList();
-            cmbGenre.DisplayMember = "Name";
-            cmbGenre.ValueMember = "Id";
+            using (BookStoreContext db = new BookStoreContext())
+            {
+                cmbGenre.DataSource = db.Genres.ToList();
+                cmbGenre.DisplayMember = "Name";
+                cmbGenre.ValueMember = "Id";
+            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (editingBook == null)
+            using (BookStoreContext db = new BookStoreContext())
             {
-                editingBook = new Book();
-                db.Books.InsertOnSubmit(editingBook);
+                try
+                {
+                    if (string.IsNullOrWhiteSpace(txtName.Text))
+                    {
+                        MessageBox.Show("Book name is required!", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (editingBook == null)
+                    {
+                        editingBook = new Book();
+                        db.Books.Add(editingBook);
+                        db.SaveChanges();
+                    }
+
+                    // FIX: Use ID comparison instead of db.Books.Contains(editingBook)
+                    if (!db.Books.Local.Any(b => b.Id == editingBook.Id))
+                    {
+                        db.Books.Attach(editingBook);
+                    }
+
+                    // Update all properties
+                    editingBook.Name = txtName.Text;
+                    editingBook.AuthorName = txtAuthor.Text;
+                    editingBook.PublisherName = txtPublisher.Text;
+                    editingBook.Pages = (int)numPages.Value;
+                    editingBook.GenreId = (int)cmbGenre.SelectedValue;
+                    editingBook.DatePublished = dtpPublishDate.Value;
+                    editingBook.PrimeCost = numPrime.Value;
+                    editingBook.SalePrice = numSale.Value;
+                    editingBook.IsSequel = chkSequel.Checked;
+
+                    try
+                    {
+                        db.SaveChanges();
+                        MessageBox.Show("Book saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
+                    }
+                    catch (System.Data.Entity.Infrastructure.DbUpdateConcurrencyException)
+                    {
+                        var entry = db.Entry(editingBook);
+                        entry.Reload();
+                        MessageBox.Show("Warning: Another user has modified this book. Your changes were not saved.",
+                                        "Update Conflict", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error saving book: {ex.Message}", "Error",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-
-            editingBook.Name = txtName.Text;
-            editingBook.AuthorName = txtAuthor.Text;
-            editingBook.Pages = (int)numPages.Value;
-            editingBook.GenreId = (int)cmbGenre.SelectedValue;
-            editingBook.DatePublished = dtpPublishDate.Value;
-            editingBook.PrimeCost = numPrime.Value;
-            editingBook.SalePrice = numSale.Value;
-            editingBook.IsSequel = chkSequel.Checked;
-
-            db.SubmitChanges();
-            this.Close();
         }
     }
 }
