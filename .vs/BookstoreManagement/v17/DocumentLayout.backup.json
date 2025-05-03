@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\forms\\discountform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:forms\\discountform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\forms\\discountform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:forms\\discountform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\forms\\sellform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:forms\\sellform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -37,11 +45,36 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DiscountForm.cs",
+              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\DiscountForm.cs",
+              "RelativeDocumentMoniker": "Forms\\DiscountForm.cs",
+              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\DiscountForm.cs",
+              "RelativeToolTip": "Forms\\DiscountForm.cs",
+              "ViewState": "AgIAAN4AAAAAAAAAAAAYwAEBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-03T11:26:31.45Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "DiscountForm.cs [Design]",
+              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\DiscountForm.cs",
+              "RelativeDocumentMoniker": "Forms\\DiscountForm.cs",
+              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\DiscountForm.cs [Design]",
+              "RelativeToolTip": "Forms\\DiscountForm.cs [Design]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-03T11:26:29.476Z",
+              "EditorCaption": " [Design]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "DatabaseInitializer.cs",
               "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Data\\DatabaseInitializer.cs",
               "RelativeDocumentMoniker": "Data\\DatabaseInitializer.cs",
@@ -54,20 +87,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "SellForm.cs",
               "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\SellForm.cs",
               "RelativeDocumentMoniker": "Forms\\SellForm.cs",
               "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\SellForm.cs",
               "RelativeToolTip": "Forms\\SellForm.cs",
-              "ViewState": "AgIAAJoAAAAAAAAAAAAkwL8AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAPkAAAAAAAAAAAAswBMBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-03T11:09:00.73Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "dbo.Sales [Data]",
               "DocumentMoniker": "ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/BookStoreDB/True/SqlTable/dbo.Sales.sql",
               "ToolTip": "dbo.Sales [Data]",
@@ -77,7 +110,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "ReportsForm.cs",
               "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\ReportsForm.cs",
               "RelativeDocumentMoniker": "Forms\\ReportsForm.cs",
@@ -90,7 +123,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "Configuration.cs",
               "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Migrations\\Configuration.cs",
               "RelativeDocumentMoniker": "Migrations\\Configuration.cs",
@@ -103,7 +136,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "Sale.cs",
               "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Models\\Sale.cs",
               "RelativeDocumentMoniker": "Models\\Sale.cs",
@@ -116,7 +149,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "Users.cs",
               "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Models\\Users.cs",
               "RelativeDocumentMoniker": "Models\\Users.cs",
