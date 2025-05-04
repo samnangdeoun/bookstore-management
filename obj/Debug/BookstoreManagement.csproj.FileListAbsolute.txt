@@ -57,7 +57,6 @@ C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-managem
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-management\bin\Debug\System.ValueTuple.xml
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-management\obj\Debug\BookstoreManagement.csproj.AssemblyReference.cache
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-management\obj\Debug\BookstoreManagement.Forms.BookForm.resources
-C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-management\obj\Debug\BookstoreManagement.Migrations.InitialCreate.resources
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-management\obj\Debug\BookstoreManagement.Properties.Resources.resources
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-management\obj\Debug\BookstoreManagement.csproj.GenerateResource.cache
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-management\obj\Debug\BookstoreManagement.csproj.CoreCompileInputs.cache
@@ -65,3 +64,4 @@ C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-managem
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-management\obj\Debug\BookstoreManagement.exe
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-management\obj\Debug\BookstoreManagement.pdb
 C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-management\obj\Debug\BookstoreManagement.exe.config
+C:\Virtual DriveD\Study Material\STEP\Subjects\ADO.Net\Re-Exam\bookstore-management\obj\Debug\BookstoreManagement.Migrations.InitialCreate.resources

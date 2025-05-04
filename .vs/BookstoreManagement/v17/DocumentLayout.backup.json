@@ -3,39 +3,24 @@
   "WorkspaceRootPath": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\forms\\discountform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:forms\\discountform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\forms\\discountform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:forms\\discountform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\forms\\sellform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:forms\\sellform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\data\\bookstorecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:data\\bookstorecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\data\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:data\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\forms\\reportsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:forms\\reportsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\models\\reservationitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:models\\reservationitem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/BookStoreDB/True/SqlTable/dbo.Sales.sql||{0058A1F7-65F3-4DB9-B3D0-CA7E64DD73CD}"
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\forms\\reservedbooksform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:forms\\reservedbooksform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\migrations\\configuration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:migrations\\configuration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\models\\sale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:models\\sale.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\models\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:models\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\models\\reservation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:models\\reservation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -45,119 +30,70 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "DiscountForm.cs",
-              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\DiscountForm.cs",
-              "RelativeDocumentMoniker": "Forms\\DiscountForm.cs",
-              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\DiscountForm.cs",
-              "RelativeToolTip": "Forms\\DiscountForm.cs",
-              "ViewState": "AgIAAN4AAAAAAAAAAAAYwAEBAAAAAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "ReservedBooksForm.cs [Design]",
+              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\ReservedBooksForm.cs",
+              "RelativeDocumentMoniker": "Forms\\ReservedBooksForm.cs",
+              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\ReservedBooksForm.cs [Design]",
+              "RelativeToolTip": "Forms\\ReservedBooksForm.cs [Design]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-03T11:26:31.45Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DiscountForm.cs [Design]",
-              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\DiscountForm.cs",
-              "RelativeDocumentMoniker": "Forms\\DiscountForm.cs",
-              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\DiscountForm.cs [Design]",
-              "RelativeToolTip": "Forms\\DiscountForm.cs [Design]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-03T11:26:29.476Z",
+              "WhenOpened": "2025-05-04T08:08:54.019Z",
               "EditorCaption": " [Design]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "DatabaseInitializer.cs",
               "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Data\\DatabaseInitializer.cs",
               "RelativeDocumentMoniker": "Data\\DatabaseInitializer.cs",
               "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Data\\DatabaseInitializer.cs",
               "RelativeToolTip": "Data\\DatabaseInitializer.cs",
-              "ViewState": "AgIAAIMAAAAAAAAAAAAswJ0AAAAsAAAAAAAAAA==",
+              "ViewState": "AgIAACQAAAAAAAAAAAAiwDsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-03T11:10:47.831Z",
+              "WhenOpened": "2025-05-04T08:08:37.26Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SellForm.cs",
-              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\SellForm.cs",
-              "RelativeDocumentMoniker": "Forms\\SellForm.cs",
-              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\SellForm.cs",
-              "RelativeToolTip": "Forms\\SellForm.cs",
-              "ViewState": "AgIAAPkAAAAAAAAAAAAswBMBAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "BookStoreContext.cs",
+              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Data\\BookStoreContext.cs",
+              "RelativeDocumentMoniker": "Data\\BookStoreContext.cs",
+              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Data\\BookStoreContext.cs",
+              "RelativeToolTip": "Data\\BookStoreContext.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAA6wCgAAABMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-03T11:09:00.73Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "dbo.Sales [Data]",
-              "DocumentMoniker": "ViewDataWindow_MSSQL__/_localdb__MSSQLLocalDB/BookStoreDB/True/SqlTable/dbo.Sales.sql",
-              "ToolTip": "dbo.Sales [Data]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-05-03T11:08:09.926Z",
+              "WhenOpened": "2025-05-04T08:05:55.469Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "ReportsForm.cs",
-              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\ReportsForm.cs",
-              "RelativeDocumentMoniker": "Forms\\ReportsForm.cs",
-              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Forms\\ReportsForm.cs",
-              "RelativeToolTip": "Forms\\ReportsForm.cs",
-              "ViewState": "AgIAAFQAAAAAAAAAAAAiwGEAAAAAAAAAAAAAAA==",
+              "Title": "Reservation.cs",
+              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Models\\Reservation.cs",
+              "RelativeDocumentMoniker": "Models\\Reservation.cs",
+              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Models\\Reservation.cs",
+              "RelativeToolTip": "Models\\Reservation.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-03T11:06:34.188Z",
+              "WhenOpened": "2025-05-04T08:01:49.487Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Configuration.cs",
-              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Migrations\\Configuration.cs",
-              "RelativeDocumentMoniker": "Migrations\\Configuration.cs",
-              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Migrations\\Configuration.cs",
-              "RelativeToolTip": "Migrations\\Configuration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAABOAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "ReservationItem.cs",
+              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Models\\ReservationItem.cs",
+              "RelativeDocumentMoniker": "Models\\ReservationItem.cs",
+              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Models\\ReservationItem.cs",
+              "RelativeToolTip": "Models\\ReservationItem.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-03T11:04:31.78Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Sale.cs",
-              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Models\\Sale.cs",
-              "RelativeDocumentMoniker": "Models\\Sale.cs",
-              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Models\\Sale.cs",
-              "RelativeToolTip": "Models\\Sale.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABcAAAAvAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-03T11:04:23.395Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Users.cs",
-              "DocumentMoniker": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Models\\Users.cs",
-              "RelativeDocumentMoniker": "Models\\Users.cs",
-              "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Models\\Users.cs",
-              "RelativeToolTip": "Models\\Users.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-03T11:04:20.686Z",
+              "WhenOpened": "2025-05-04T08:01:47.955Z",
               "EditorCaption": ""
             }
           ]

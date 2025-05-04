@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace BookstoreManagement.Models
         public string AuthorName { get; set; }
         public int Pages { get; set; }
 
+        [Required]
         public int GenreId { get; set; }
         public DateTime DatePublished { get; set; }
         public string PublisherName { get; set; }
@@ -25,6 +27,9 @@ namespace BookstoreManagement.Models
         [Column(TypeName = "decimal")]
         public decimal SalePrice { get; set; }
         public bool IsSequel { get; set; }
+
+        [ForeignKey("GenreId")]
+        public virtual Genre Genre { get; set; }
 
         public Book() { }
     }

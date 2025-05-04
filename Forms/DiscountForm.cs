@@ -105,7 +105,7 @@ namespace BookstoreManagement.Forms
                 Top = top + 60,
                 Left = 20,
                 Width = 640,
-                Height = 350,
+                Height = 300,
                 ReadOnly = true,
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,

@@ -9,11 +9,12 @@ namespace BookstoreManagement.Models
     public class Reservation
     {
         public int Id { get; set; }
-        public int BookId { get; set; }
         public string CustomerName { get; set; }
         public DateTime ReservedAt { get; set; }
+        public bool Status { get; set; }
 
-        // Navigation property for related Book entity
-        public virtual Book Book { get; set; }
+        public virtual ICollection<ReservationItem> ReservationItems { get; set; }
+        public decimal TotalAmount => ReservationItems?.Sum(item => item.TotalPrice) ?? 0;
     }
+
 }

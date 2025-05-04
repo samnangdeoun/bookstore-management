@@ -1,15 +1,31 @@
 ﻿using BookstoreManagement.Data;
 using System;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using ClosedXML.Excel;
 
 namespace BookstoreManagement.Forms
 {
     public partial class ReportsForm : Form
     {
-        private DateTimePicker dtpStartDate, dtpEndDate;
-        private Button btnGenerateReport, btnExportExcel;
-        private DataGridView dgvSalesReport;
+        // Controls for Best Sellers tab
+        private DateTimePicker dtpStartBestSellers, dtpEndBestSellers;
+        private Button btnGenerateBestSellers, btnExportBestSellers;
+        private DataGridView dgvBestSellers;
+
+        // Controls for Popular Authors tab
+        private DateTimePicker dtpStartAuthors, dtpEndAuthors;
+        private Button btnGenerateAuthors, btnExportAuthors;
+        private DataGridView dgvAuthors;
+
+        // Controls for Popular Genres tab
+        private DateTimePicker dtpStartGenres, dtpEndGenres;
+        private Button btnGenerateGenres, btnExportGenres;
+        private DataGridView dgvGenres;
+
+        private TabControl tabControlReports;
+        private TabPage tabBestSellers, tabPopularAuthors, tabPopularGenres;
 
         public ReportsForm()
         {
@@ -21,140 +37,198 @@ namespace BookstoreManagement.Forms
 
         private void InitializeControls()
         {
-            int top = 20;
+            tabControlReports = new TabControl { Dock = DockStyle.Fill };
 
-            Label CreateLabel(string text)
+            tabBestSellers = new TabPage("Best Sellers");
+            tabPopularAuthors = new TabPage("Popular Authors");
+            tabPopularGenres = new TabPage("Popular Genres");
+
+            tabControlReports.TabPages.AddRange(new TabPage[]
             {
-                return new Label
-                {
-                    Text = text,
-                    Top = top,
-                    Left = 20,
-                    Width = 120
-                };
-            }
+                tabBestSellers, tabPopularAuthors, tabPopularGenres
+            });
 
-            Control AddControl(Control control)
-            {
-                control.Top = top;
-                control.Left = 160;
-                control.Width = 180;
-                this.Controls.Add(control);
-                top += 40;
-                return control;
-            }
+            this.Controls.Add(tabControlReports);
 
-            this.Controls.Add(CreateLabel("Start Date:"));
-            dtpStartDate = (DateTimePicker)AddControl(new DateTimePicker());
-
-            this.Controls.Add(CreateLabel("End Date:"));
-            dtpEndDate = (DateTimePicker)AddControl(new DateTimePicker());
-
-            btnGenerateReport = new Button
-            {
-                Text = "Generate Report",
-                Top = top + 10,
-                Left = 20,
-                Width = 180
-            };
-            btnGenerateReport.Click += btnGenerateReport_Click;
-            this.Controls.Add(btnGenerateReport);
-
-            dgvSalesReport = new DataGridView
-            {
-                Top = top + 60,
-                Left = 20,
-                Width = 740,
-                Height = 200,
-                ReadOnly = true,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-            };
-            this.Controls.Add(dgvSalesReport);
-
-            btnExportExcel= new Button
-            {
-                Text = "Export Report",
-                Top = top + 10,
-                Left = 220,
-                Width = 180
-
-            };
-            btnExportExcel.Click += btnExport_Click;
-            this.Controls.Add(btnExportExcel);
+            InitializeBestSellersTab();
+            InitializePopularAuthorsTab();
+            InitializePopularGenresTab();
         }
 
-        private void btnGenerateReport_Click(object sender, EventArgs e)
+        private void InitializeBestSellersTab()
         {
-            using (BookStoreContext db = new BookStoreContext())
+            dtpStartBestSellers = new DateTimePicker { Top = 20, Left = 120, Width = 180 };
+            dtpEndBestSellers = new DateTimePicker { Top = 60, Left = 120, Width = 180 };
+            btnGenerateBestSellers = new Button { Text = "Generate Best Sellers Report", Top = 100, Left = 20, Width = 180 };
+            btnGenerateBestSellers.Click += btnGenerateBestSellersReport_Click;
+            dgvBestSellers = new DataGridView { Top = 140, Left = 20, Width = 740, Height = 200, ReadOnly = true, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
+            btnExportBestSellers = new Button { Text = "Export Report", Top = 360, Left = 20, Width = 180 };
+            btnExportBestSellers.Click += (s, e) => ExportToExcel(dgvBestSellers);
+
+            tabBestSellers.Controls.AddRange(new Control[]
             {
-                DateTime startDate = dtpStartDate.Value.Date;
-                DateTime endDate = dtpEndDate.Value.Date.AddDays(1).AddTicks(-1); // include full day
+                new Label { Text = "Start Date:", Top = 20, Left = 20 },
+                new Label { Text = "End Date:", Top = 60, Left = 20 },
+                dtpStartBestSellers, dtpEndBestSellers,
+                btnGenerateBestSellers, dgvBestSellers, btnExportBestSellers
+            });
+        }
+
+        private void InitializePopularAuthorsTab()
+        {
+            dtpStartAuthors = new DateTimePicker { Top = 20, Left = 120, Width = 180 };
+            dtpEndAuthors = new DateTimePicker { Top = 60, Left = 120, Width = 180 };
+            btnGenerateAuthors = new Button { Text = "Generate Popular Authors Report", Top = 100, Left = 20, Width = 180 };
+            btnGenerateAuthors.Click += btnGeneratePopularAuthorsReport_Click;
+            dgvAuthors = new DataGridView { Top = 140, Left = 20, Width = 740, Height = 200, ReadOnly = true, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
+            btnExportAuthors = new Button { Text = "Export Report", Top = 360, Left = 20, Width = 180 };
+            btnExportAuthors.Click += (s, e) => ExportToExcel(dgvAuthors);
+
+            tabPopularAuthors.Controls.AddRange(new Control[]
+            {
+                new Label { Text = "Start Date:", Top = 20, Left = 20 },
+                new Label { Text = "End Date:", Top = 60, Left = 20 },
+                dtpStartAuthors, dtpEndAuthors,
+                btnGenerateAuthors, dgvAuthors, btnExportAuthors
+            });
+        }
+
+        private void InitializePopularGenresTab()
+        {
+            dtpStartGenres = new DateTimePicker { Top = 20, Left = 120, Width = 180 };
+            dtpEndGenres = new DateTimePicker { Top = 60, Left = 120, Width = 180 };
+            btnGenerateGenres = new Button { Text = "Generate Popular Genres Report", Top = 100, Left = 20, Width = 180 };
+            btnGenerateGenres.Click += btnGeneratePopularGenresReport_Click;
+            dgvGenres = new DataGridView { Top = 140, Left = 20, Width = 740, Height = 200, ReadOnly = true, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
+            btnExportGenres = new Button { Text = "Export Report", Top = 360, Left = 20, Width = 180 };
+            btnExportGenres.Click += (s, e) => ExportToExcel(dgvGenres);
+
+            tabPopularGenres.Controls.AddRange(new Control[]
+            {
+                new Label { Text = "Start Date:", Top = 20, Left = 20 },
+                new Label { Text = "End Date:", Top = 60, Left = 20 },
+                dtpStartGenres, dtpEndGenres,
+                btnGenerateGenres, dgvGenres, btnExportGenres
+            });
+        }
+
+        private void btnGenerateBestSellersReport_Click(object sender, EventArgs e)
+        {
+            using (var db = new BookStoreContext())
+            {
+                var startDate = dtpStartBestSellers.Value.Date;
+                var endDate = dtpEndBestSellers.Value.Date.AddDays(1).AddTicks(-1);
 
                 if (endDate < startDate)
                 {
-                    MessageBox.Show("End Date must be after Start Date.", "Invalid Date Range", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("End Date must be after Start Date.");
                     return;
                 }
 
-                var salesReport = db.Sales
+                var result = db.Sales
                     .Where(s => s.DateSold >= startDate && s.DateSold <= endDate)
                     .GroupBy(s => new { s.Book.Name, s.Book.AuthorName })
                     .Select(g => new
                     {
                         BookName = g.Key.Name,
                         Author = g.Key.AuthorName,
-                        DiscountAmount = g.Sum(s => s.DiscountAmount),
                         QuantitySold = g.Sum(s => s.Quantity),
                         TotalSales = g.Sum(s => s.TotalPrice)
                     })
+                    .OrderByDescending(r => r.QuantitySold)
                     .ToList();
 
-                dgvSalesReport.DataSource = salesReport;
-
-                if (dgvSalesReport.Columns["TotalSales"] != null)
-                {
-                    dgvSalesReport.Columns["TotalSales"].DefaultCellStyle.Format = "C2"; // currency format
-                }
+                dgvBestSellers.DataSource = result;
+                dgvBestSellers.Columns["TotalSales"].DefaultCellStyle.Format = "C2";
             }
         }
 
-        private void btnExport_Click(object sender, EventArgs e)
+        private void btnGeneratePopularAuthorsReport_Click(object sender, EventArgs e)
         {
-            if (dgvSalesReport.DataSource == null)
+            using (var db = new BookStoreContext())
+            {
+                var startDate = dtpStartAuthors.Value.Date;
+                var endDate = dtpEndAuthors.Value.Date.AddDays(1).AddTicks(-1);
+
+                if (endDate < startDate)
+                {
+                    MessageBox.Show("End Date must be after Start Date.");
+                    return;
+                }
+
+                var result = db.Sales
+                    .Where(s => s.DateSold >= startDate && s.DateSold <= endDate)
+                    .GroupBy(s => s.Book.AuthorName)
+                    .Select(g => new
+                    {
+                        Author = g.Key,
+                        QuantitySold = g.Sum(s => s.Quantity),
+                        TotalSales = g.Sum(s => s.TotalPrice)
+                    })
+                    .OrderByDescending(r => r.QuantitySold)
+                    .ToList();
+
+                dgvAuthors.DataSource = result;
+                dgvAuthors.Columns["TotalSales"].DefaultCellStyle.Format = "C2";
+            }
+        }
+
+        private void btnGeneratePopularGenresReport_Click(object sender, EventArgs e)
+        {
+            using (var db = new BookStoreContext())
+            {
+                var startDate = dtpStartGenres.Value.Date;
+                var endDate = dtpEndGenres.Value.Date.AddDays(1).AddTicks(-1);
+
+                if (endDate < startDate)
+                {
+                    MessageBox.Show("End Date must be after Start Date.");
+                    return;
+                }
+
+                var result = db.Sales
+                    .Where(s => s.DateSold >= startDate && s.DateSold <= endDate)
+                    .GroupBy(s => s.Book.Genre)
+                    .Select(g => new
+                    {
+                        Genre = g.Key.Name,
+                        QuantitySold = g.Sum(s => s.Quantity),
+                        TotalSales = g.Sum(s => s.TotalPrice)
+                    })
+                    .OrderByDescending(r => r.QuantitySold)
+                    .ToList();
+
+                dgvGenres.DataSource = result;
+                dgvGenres.Columns["TotalSales"].DefaultCellStyle.Format = "C2";
+            }
+        }
+
+        private void ExportToExcel(DataGridView dgv)
+        {
+            if (dgv.DataSource == null)
             {
                 MessageBox.Show("Please generate a report first.");
                 return;
             }
 
-            using (SaveFileDialog sfd = new SaveFileDialog()
-            {
-                Filter = "Excel Workbook|*.xlsx",
-                Title = "Save Sales Report"
-            })
+            using (SaveFileDialog sfd = new SaveFileDialog { Filter = "Excel Workbook|*.xlsx", Title = "Save Report" })
             {
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    var dt = new System.Data.DataTable();
+                    var dt = new DataTable();
 
-                    // Add columns
-                    foreach (DataGridViewColumn column in dgvSalesReport.Columns)
-                    {
-                        dt.Columns.Add(column.HeaderText);
-                    }
+                    foreach (DataGridViewColumn col in dgv.Columns)
+                        dt.Columns.Add(col.HeaderText);
 
-                    // Add rows
-                    foreach (DataGridViewRow row in dgvSalesReport.Rows)
+                    foreach (DataGridViewRow row in dgv.Rows)
                     {
                         if (!row.IsNewRow)
-                        {
-                            var data = row.Cells.Cast<DataGridViewCell>().Select(c => c.Value?.ToString()).ToArray();
-                            dt.Rows.Add(data);
-                        }
+                            dt.Rows.Add(row.Cells.Cast<DataGridViewCell>().Select(c => c.Value?.ToString()).ToArray());
                     }
 
-                    using (var workbook = new ClosedXML.Excel.XLWorkbook())
+                    using (var workbook = new XLWorkbook())
                     {
-                        workbook.Worksheets.Add(dt, "SalesReport");
+                        workbook.Worksheets.Add(dt, "Report");
                         workbook.SaveAs(sfd.FileName);
                     }
 
@@ -162,6 +236,5 @@ namespace BookstoreManagement.Forms
                 }
             }
         }
-
     }
 }

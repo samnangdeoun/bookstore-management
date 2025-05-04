@@ -58,7 +58,7 @@ namespace BookstoreManagement
                     b.Id,
                     b.Name,
                     Author = b.AuthorName,
-                    Genre = b.GenreId,
+                    Genre = b.Genre.Name,
                     b.SalePrice,
                     IsSequel = b.IsSequel ? "Yes" : "No"
                 }).ToList();

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using BookstoreManagement.Data;
+using BookstoreManagement.Models;
+using System;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using BookstoreManagement.Data;
-using BookstoreManagement.Models;
 
 namespace BookstoreManagement.Forms
 {
@@ -28,16 +29,30 @@ namespace BookstoreManagement.Forms
 
             if (book != null)
             {
-                editingBook = book;
-                txtName.Text = book.Name;
-                txtAuthor.Text = book.AuthorName;
-                txtPublisher.Text = book.PublisherName;
-                numPages.Value = (decimal)book.Pages;
-                cmbGenre.SelectedValue = book.GenreId;
-                dtpPublishDate.Value = book.DatePublished != default ? book.DatePublished : DateTime.Now;
-                numPrime.Value = book.PrimeCost != default ? book.PrimeCost : 0m;
-                numSale.Value = book.SalePrice != default ? book.SalePrice : 0m;
-                chkSequel.Checked = book.IsSequel;
+                // Clone the book to avoid entity tracking issues
+                editingBook = new Book
+                {
+                    Id = book.Id,
+                    Name = book.Name,
+                    AuthorName = book.AuthorName,
+                    PublisherName = book.PublisherName,
+                    Pages = book.Pages,
+                    GenreId = book.GenreId,
+                    DatePublished = book.DatePublished,
+                    PrimeCost = book.PrimeCost,
+                    SalePrice = book.SalePrice,
+                    IsSequel = book.IsSequel
+                };
+
+                txtName.Text = editingBook.Name;
+                txtAuthor.Text = editingBook.AuthorName;
+                txtPublisher.Text = editingBook.PublisherName;
+                numPages.Value = (decimal)editingBook.Pages;
+                cmbGenre.SelectedValue = editingBook.GenreId;
+                dtpPublishDate.Value = editingBook.DatePublished != default ? editingBook.DatePublished : DateTime.Now;
+                numPrime.Value = editingBook.PrimeCost != default ? editingBook.PrimeCost : 0m;
+                numSale.Value = editingBook.SalePrice != default ? editingBook.SalePrice : 0m;
+                chkSequel.Checked = editingBook.IsSequel;
             }
         }
 
@@ -114,49 +129,50 @@ namespace BookstoreManagement.Forms
                         return;
                     }
 
-                    if (editingBook == null)
+                    Book bookToSave;
+
+                    if (editingBook == null || editingBook.Id == 0)
                     {
-                        editingBook = new Book();
-                        db.Books.Add(editingBook);
-                        db.SaveChanges();
+                        // New book
+                        bookToSave = new Book();
+                        db.Books.Add(bookToSave);
+                    }
+                    else
+                    {
+                        // Existing book, fetch it fresh from the database
+                        bookToSave = db.Books.Find(editingBook.Id);
+                        if (bookToSave == null)
+                        {
+                            MessageBox.Show("Book not found in database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
                     }
 
-                    // FIX: Use ID comparison instead of db.Books.Contains(editingBook)
-                    if (!db.Books.Local.Any(b => b.Id == editingBook.Id))
-                    {
-                        db.Books.Attach(editingBook);
-                    }
+                    // Update values from the form
+                    bookToSave.Name = txtName.Text;
+                    bookToSave.AuthorName = txtAuthor.Text;
+                    bookToSave.PublisherName = txtPublisher.Text;
+                    bookToSave.Pages = (int)numPages.Value;
+                    bookToSave.GenreId = (int)cmbGenre.SelectedValue;
+                    bookToSave.DatePublished = dtpPublishDate.Value;
+                    bookToSave.PrimeCost = numPrime.Value;
+                    bookToSave.SalePrice = numSale.Value;
+                    bookToSave.IsSequel = chkSequel.Checked;
 
-                    // Update all properties
-                    editingBook.Name = txtName.Text;
-                    editingBook.AuthorName = txtAuthor.Text;
-                    editingBook.PublisherName = txtPublisher.Text;
-                    editingBook.Pages = (int)numPages.Value;
-                    editingBook.GenreId = (int)cmbGenre.SelectedValue;
-                    editingBook.DatePublished = dtpPublishDate.Value;
-                    editingBook.PrimeCost = numPrime.Value;
-                    editingBook.SalePrice = numSale.Value;
-                    editingBook.IsSequel = chkSequel.Checked;
+                    db.SaveChanges();
 
-                    try
-                    {
-                        db.SaveChanges();
-                        MessageBox.Show("Book saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        this.DialogResult = DialogResult.OK;
-                        this.Close();
-                    }
-                    catch (System.Data.Entity.Infrastructure.DbUpdateConcurrencyException)
-                    {
-                        var entry = db.Entry(editingBook);
-                        entry.Reload();
-                        MessageBox.Show("Warning: Another user has modified this book. Your changes were not saved.",
-                                        "Update Conflict", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
+                    MessageBox.Show("Book saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                catch (System.Data.Entity.Infrastructure.DbUpdateConcurrencyException)
+                {
+                    MessageBox.Show("Warning: Another user has modified this book. Your changes were not saved.",
+                                    "Update Conflict", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error saving book: {ex.Message}", "Error",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error saving book: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

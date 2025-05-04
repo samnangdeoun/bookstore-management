@@ -40,5 +40,11 @@ namespace BookstoreManagement.Forms
         {
             new ReportsForm().ShowDialog();
         }
+
+        private void btnSignOut_Click(object sender, EventArgs e)
+        {
+            this.Close();
+            new LoginForm().Show();
+        }
     }
 }

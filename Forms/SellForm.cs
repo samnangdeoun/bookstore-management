@@ -10,16 +10,17 @@ namespace BookstoreManagement.Forms
     public partial class SellForm : Form
     {
         private ComboBox cmbBooks;
+        private TextBox txtCustomerName;
         private NumericUpDown nudQuantity;
         private Button btnAddToCart;
         private DataGridView dgvBooks;
-        private Label lblGrandTotal;
-        private Button btnSell;
+        private Label lblGrandTotal, lblTotalDiscount;
+        private Button btnSell, btnReserve;
 
         public SellForm()
         {
             this.Text = "Sell Books";
-            this.Size = new Size(800, 550);
+            this.Size = new Size(800, 600);
             this.StartPosition = FormStartPosition.CenterScreen;
 
             InitializeControls();
@@ -37,6 +38,22 @@ namespace BookstoreManagement.Forms
                 Width = 100
             };
             this.Controls.Add(lblSelect);
+
+            var lblCustomer = new Label
+            {
+                Text = "Customer Name:",
+                Top = 40,
+                Left = 20,
+                Width = 100
+            };
+            this.Controls.Add(lblCustomer);
+
+            txtCustomerName = new TextBox{
+                Top = 40,
+                Left = 130,
+                Width = 100
+            };
+            this.Controls.Add(txtCustomerName);
 
             // Book dropdown
             cmbBooks = new ComboBox
@@ -83,7 +100,7 @@ namespace BookstoreManagement.Forms
             // DataGridView for cart
             dgvBooks = new DataGridView
             {
-                Top = 50,
+                Top = 70,
                 Left = 20,
                 Width = 740,
                 Height = 350,
@@ -105,7 +122,7 @@ namespace BookstoreManagement.Forms
             lblGrandTotal = new Label
             {
                 Text = "Total: $0.00",
-                Top = 410,
+                Top = 430,
                 Left = 540,
                 Width = 220,
                 Height = 30,
@@ -114,18 +131,124 @@ namespace BookstoreManagement.Forms
             };
             this.Controls.Add(lblGrandTotal);
 
+            lblTotalDiscount = new Label
+            {
+                Text = "Total Discount: $0.00",
+                Top = 460,
+                Left = 540,
+                Width = 220,
+                Height = 30,
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                TextAlign = ContentAlignment.MiddleRight
+            };
+            this.Controls.Add(lblTotalDiscount);
+
             // Sell button
             btnSell = new Button
             {
                 Text = "Sell Selected",
-                Top = 450,
+                Top = 490,
                 Left = 20,
-                Width = 740,
+                Width = 300,
                 Height = 40
             };
             btnSell.Click += btnSell_Click;
             this.Controls.Add(btnSell);
+
+            // Reserve Button
+            btnReserve = new Button
+            {
+                Text = "Reservation",
+                Top = 490,
+                Left = 460,
+                Width = 300,
+                Height = 40
+            };
+            btnReserve.Click += btnReserve_Click;
+            this.Controls.Add(btnReserve);
+
+            var removeButtonCol = new DataGridViewButtonColumn
+            {
+                Name = "Remove",
+                HeaderText = "Action",
+                Text = "Remove",
+                UseColumnTextForButtonValue = true
+            };
+            dgvBooks.Columns.Add(removeButtonCol);
+
+            // Attach event handler
+            dgvBooks.CellClick += dgvBooks_CellClick;
+
         }
+
+        private void dgvBooks_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0 && dgvBooks.Columns[e.ColumnIndex].Name == "Remove")
+            {
+                var result = MessageBox.Show("Remove this item from cart?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    dgvBooks.Rows.RemoveAt(e.RowIndex);
+                    UpdateGrandTotal();
+                }
+            }
+        }
+
+        private void btnReserve_Click(object sender, EventArgs e)
+        {
+            using (var db = new BookStoreContext())
+            {
+                // Gather all valid rows (books with quantity > 0)
+                var items = dgvBooks.Rows
+                    .Cast<DataGridViewRow>()
+                    .Where(r => int.TryParse(r.Cells["Quantity"].Value?.ToString(), out int q) && q > 0)
+                    .Select(row =>
+                    {
+                        int bookId = int.Parse(row.Cells["BookId"].Value.ToString());
+                        int quantity = int.Parse(row.Cells["Quantity"].Value.ToString());
+                        var book = db.Books.FirstOrDefault(b => b.Id == bookId);
+                        decimal discount = decimal.Parse(row.Cells["Discount"].Value.ToString());
+
+                        return new ReservationItem
+                        {
+                            BookId = bookId,
+                            Quantity = quantity,
+                            UnitPrice = book.SalePrice,
+                            Discount = discount
+                        };
+                    })
+                    .ToList();
+
+                if (!items.Any())
+                {
+                    MessageBox.Show("Please add books to the reservation.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                decimal total = items.Sum(i => (i.UnitPrice * i.Quantity) - (i.Discount * i.Quantity));
+                var confirm = MessageBox.Show($"Are you sure you want to reserve selected books?\nTotal: {total:C2}",
+                    "Confirm Reservation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (confirm != DialogResult.Yes) return;
+
+                // Create the reservation
+                var reservation = new Reservation
+                {
+                    CustomerName = txtCustomerName.Text.Trim(),
+                    ReservedAt = DateTime.Now,
+                    Status = false, // not yet completed
+                    ReservationItems = items
+                };
+
+                db.Reservations.Add(reservation);
+                db.SaveChanges();
+
+                MessageBox.Show($"Reservation created successfully. Total: {total:C2}", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadBooks(); // Reset the form
+            }
+        }
+
+
 
         private void LoadBooks()
         {
@@ -145,8 +268,10 @@ namespace BookstoreManagement.Forms
             }
 
             dgvBooks.Rows.Clear();
+            lblTotalDiscount.Text = "Total Discount: $0.00";
             lblGrandTotal.Text = "Total: $0.00";
         }
+
 
         private void btnAddToCart_Click(object sender, EventArgs e)
         {
@@ -154,6 +279,7 @@ namespace BookstoreManagement.Forms
 
             var selected = (dynamic)cmbBooks.SelectedItem;
             int bookId = selected.Id;
+            int genreId = selected.GenreId;
             string name = selected.Name;
             decimal price = selected.SalePrice;
             int quantity = (int)nudQuantity.Value;
@@ -175,9 +301,8 @@ namespace BookstoreManagement.Forms
             decimal discount = 0;
             using (var db = new BookStoreContext())
             {
-                var book = db.Books.Find(bookId);
                 var disc = db.Discounts.FirstOrDefault(d =>
-                    d.GenreId == book.GenreId &&
+                    d.GenreId == genreId &&
                     d.StartDate <= DateTime.Now &&
                     d.EndDate >= DateTime.Now);
 
@@ -216,15 +341,23 @@ namespace BookstoreManagement.Forms
         private void UpdateGrandTotal()
         {
             decimal grandTotal = 0;
+            decimal discountTotal = 0;
             foreach (DataGridViewRow row in dgvBooks.Rows)
             {
                 if (decimal.TryParse(row.Cells["Total"].Value?.ToString(), out decimal total))
                 {
                     grandTotal += total;
                 }
-            }
 
+                if (decimal.TryParse(row.Cells["Discount"].Value?.ToString(), out decimal discount)
+                    && decimal.TryParse(row.Cells["Quantity"].Value?.ToString(), out decimal quantity))
+                {
+                    discountTotal += (discount * quantity);
+                }
+
+            }
             lblGrandTotal.Text = $"Total: {grandTotal:C2}";
+            lblTotalDiscount.Text = $"Total Discount: {discountTotal:C2}";
         }
 
         private void btnSell_Click(object sender, EventArgs e)

@@ -13,6 +13,8 @@ namespace BookstoreManagement.Models
         [Key]
         public int Id { get; set; }
 
+        public string CustomerName { get; set; }
+
         [Required]
         [ForeignKey("Book")]
         public int BookId { get; set; }
