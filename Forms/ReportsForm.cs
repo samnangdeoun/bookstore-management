@@ -24,8 +24,13 @@ namespace BookstoreManagement.Forms
         private Button btnGenerateGenres, btnExportGenres;
         private DataGridView dgvGenres;
 
+        private ComboBox cmbSearchGenre, cmbReleaseFilter;
+        private DataGridView dgvSearchBooks, dgvNewReleases;
+        private TextBox txtSearchName, txtSearchAuthor;
+        private Button btnSearch, btnLoadNewReleases;
+
         private TabControl tabControlReports;
-        private TabPage tabBestSellers, tabPopularAuthors, tabPopularGenres;
+        private TabPage tabBestSellers, tabPopularAuthors, tabPopularGenres, tabSearchBooks, tabNewReleases;
 
         public ReportsForm()
         {
@@ -42,10 +47,12 @@ namespace BookstoreManagement.Forms
             tabBestSellers = new TabPage("Best Sellers");
             tabPopularAuthors = new TabPage("Popular Authors");
             tabPopularGenres = new TabPage("Popular Genres");
+            tabSearchBooks = new TabPage("Search Books");
+            tabNewReleases = new TabPage("New Releases");
 
             tabControlReports.TabPages.AddRange(new TabPage[]
             {
-                tabBestSellers, tabPopularAuthors, tabPopularGenres
+                tabBestSellers, tabPopularAuthors, tabPopularGenres, tabNewReleases, tabSearchBooks
             });
 
             this.Controls.Add(tabControlReports);
@@ -53,6 +60,8 @@ namespace BookstoreManagement.Forms
             InitializeBestSellersTab();
             InitializePopularAuthorsTab();
             InitializePopularGenresTab();
+            InitializeSearchBooksTab();
+            InitializeNewReleasesTab();
         }
 
         private void InitializeBestSellersTab()
@@ -109,6 +118,63 @@ namespace BookstoreManagement.Forms
                 new Label { Text = "End Date:", Top = 60, Left = 20 },
                 dtpStartGenres, dtpEndGenres,
                 btnGenerateGenres, dgvGenres, btnExportGenres
+            });
+        }
+
+        private void InitializeSearchBooksTab()
+        {
+            Label lblName = new Label { Text = "Book Name:", Top = 20, Left = 20 };
+            Label lblAuthor = new Label { Text = "Author:", Top = 60, Left = 20 };
+            Label lblGenre = new Label { Text = "Genre:", Top = 100, Left = 20 };
+
+            txtSearchName = new TextBox { Top = 20, Left = 120, Width = 200 };
+            txtSearchAuthor = new TextBox { Top = 60, Left = 120, Width = 200 };
+            cmbSearchGenre = new ComboBox { Top = 100, Left = 120, Width = 200, DropDownStyle = ComboBoxStyle.DropDownList };
+
+            btnSearch = new Button { Text = "Search", Top = 140, Left = 120 };
+            btnSearch.Click += btnSearch_Click;
+
+            dgvSearchBooks = new DataGridView { Top = 180, Left = 20, Width = 740, Height = 200, ReadOnly = true, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
+
+            tabSearchBooks.Controls.AddRange(new Control[]
+            {
+                lblName, lblAuthor, lblGenre,
+                txtSearchName, txtSearchAuthor, cmbSearchGenre,
+                btnSearch, dgvSearchBooks
+            });
+
+            using (BookStoreContext db = new BookStoreContext())
+            {
+                var genres = db.Genres.ToList();
+                cmbSearchGenre.DataSource = genres;
+                cmbSearchGenre.DisplayMember = "Name";
+                cmbSearchGenre.ValueMember = "Id";
+                cmbSearchGenre.SelectedIndex = -1;
+            }
+        }
+
+        private void InitializeNewReleasesTab()
+        {
+            Label lblFilter = new Label { Text = "Time Filter:", Top = 20, Left = 20 };
+            cmbReleaseFilter = new ComboBox
+            {
+                Top = 20,
+                Left = 120,
+                Width = 150,
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+            cmbReleaseFilter.Items.AddRange(new string[] { "Day", "Week", "Month", "Year" });
+            cmbReleaseFilter.SelectedIndex = 2;
+
+            btnLoadNewReleases = new Button { Text = "Load New Releases", Top = 60, Left = 120 };
+            btnLoadNewReleases.Click += btnLoadNewReleases_Click;
+
+            dgvNewReleases = new DataGridView { Top = 100, Left = 20, Width = 740, Height = 250, ReadOnly = true, AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill };
+
+            tabNewReleases.Controls.AddRange(new Control[]
+            {
+                lblFilter, cmbReleaseFilter,
+                btnLoadNewReleases, dgvNewReleases
             });
         }
 
@@ -200,6 +266,61 @@ namespace BookstoreManagement.Forms
 
                 dgvGenres.DataSource = result;
                 dgvGenres.Columns["TotalSales"].DefaultCellStyle.Format = "C2";
+            }
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            using (var db = new BookStoreContext())
+            {
+                var query = db.Books.AsQueryable();
+
+                if (!string.IsNullOrWhiteSpace(txtSearchName.Text))
+                    query = query.Where(b => b.Name.Contains(txtSearchName.Text));
+                if (!string.IsNullOrWhiteSpace(txtSearchAuthor.Text))
+                    query = query.Where(b => b.AuthorName.Contains(txtSearchAuthor.Text));
+                if (cmbSearchGenre.SelectedItem != null)
+                    query = query.Where(b => b.GenreId == (int)cmbSearchGenre.SelectedValue);
+
+                var results = query.Select(b => new
+                {
+                    b.Name,
+                    b.AuthorName,
+                    Genre = b.Genre.Name,
+                    b.DatePublished,
+                    b.SalePrice
+                }).ToList();
+
+                dgvSearchBooks.DataSource = results;
+            }
+        }
+
+        private void btnLoadNewReleases_Click(object sender, EventArgs e)
+        {
+            DateTime since = DateTime.Now;
+            switch (cmbReleaseFilter.SelectedItem.ToString())
+            {
+                case "Day": since = DateTime.Today; break;
+                case "Week": since = DateTime.Today.AddDays(-7); break;
+                case "Month": since = DateTime.Today.AddMonths(-1); break;
+                case "Year": since = DateTime.Today.AddYears(-1); break;
+            }
+
+            using (var db = new BookStoreContext())
+            {
+                var newReleases = db.Books
+                    .Where(b => b.DatePublished >= since)
+                    .OrderByDescending(b => b.DatePublished)
+                    .Select(b => new
+                    {
+                        b.Name,
+                        b.AuthorName,
+                        Genre = b.Genre.Name,
+                        b.DatePublished,
+                        b.SalePrice
+                    }).ToList();
+
+                dgvNewReleases.DataSource = newReleases;
             }
         }
 
