@@ -3,15 +3,15 @@
   "WorkspaceRootPath": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\data\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\data\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:data\\databaseinitializer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\forms\\reportsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\forms\\reportsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:forms\\reportsform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|c:\\virtual drived\\study material\\step\\subjects\\ado.net\\re-exam\\bookstore-management\\data\\bookstorecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\data\\bookstorecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{450874C4-7934-4AC0-823B-45181BADC6F3}|BookstoreManagement.csproj|solutionrelative:data\\bookstorecontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -46,8 +46,7 @@
               "RelativeToolTip": "Forms\\ReportsForm.cs",
               "ViewState": "AgIAAEcBAAAAAAAAAAAiwFoBAABSAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-04T15:16:00.486Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-04T15:16:00.486Z"
             },
             {
               "$type": "Document",
@@ -68,7 +67,7 @@
               "RelativeDocumentMoniker": "Data\\DatabaseInitializer.cs",
               "ToolTip": "C:\\Virtual DriveD\\Study Material\\STEP\\Subjects\\ADO.Net\\Re-Exam\\bookstore-management\\Data\\DatabaseInitializer.cs",
               "RelativeToolTip": "Data\\DatabaseInitializer.cs",
-              "ViewState": "AgIAAIgAAAAAAAAAAAAiwJgAAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAowFMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-04T08:08:37.26Z",
               "EditorCaption": ""
@@ -83,8 +82,7 @@
               "RelativeToolTip": "Data\\BookStoreContext.cs",
               "ViewState": "AgIAAA4AAAAAAAAAAAAwwA4AAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-04T08:05:55.469Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-04T08:05:55.469Z"
             },
             {
               "$type": "Document",

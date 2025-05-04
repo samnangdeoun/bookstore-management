@@ -20,7 +20,6 @@ namespace BookstoreManagement.Data
             {
                 if (db.Database.Exists())
                 {
-                    // Clear tables in order to respect foreign key constraints
                     db.Sales.RemoveRange(db.Sales);
                     db.Discounts.RemoveRange(db.Discounts);
                     db.Reservations.RemoveRange(db.Reservations);
@@ -29,7 +28,6 @@ namespace BookstoreManagement.Data
                     db.Genres.RemoveRange(db.Genres);
                     db.Users.RemoveRange(db.Users);
                     
-                    // Save all changes
                     db.SaveChanges();
                 }
             }
@@ -60,15 +58,14 @@ namespace BookstoreManagement.Data
 
                         var manager = new Users
                         {
-                            Username = "manager",
-                            PasswordHash = HashPassword("manager123"),
-                            Role = "Manager"
+                            Username = "samnang",
+                            PasswordHash = HashPassword("samnang123"),
+                            Role = "Admin"
                         };
                         db.Users.Add(manager);
 
                         db.SaveChanges();
 
-                        // Add genres one by one
                         var genreNames = new[]
                         {
                         "Fiction", "Non-Fiction", "Science Fiction", "Mystery", "Romance",
@@ -82,11 +79,9 @@ namespace BookstoreManagement.Data
 
                         db.SaveChanges();
 
-                        // Retrieve genre objects
                         var fiction = db.Genres.FirstOrDefault(g => g.Name == "Fiction");
                         var sciFi = db.Genres.FirstOrDefault(g => g.Name == "Science Fiction");
 
-                        // Add books one by one
                         var book1 = new Book
                         {
                             Name = "The Great Novel",
