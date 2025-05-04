@@ -159,6 +159,7 @@ namespace BookstoreManagement.Data
 
                         db.SaveChanges();
                     }
+                    //For Clear All Data in the DB.
                     //else
                     //{
                     //    clearDatabaseInformation();
